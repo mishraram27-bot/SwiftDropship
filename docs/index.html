@@ -4,76 +4,291 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SwiftDropship</title>
+  <meta name="description" content="SwiftDropship storefront preview on GitHub Pages">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: light; }
+    :root {
+      --brand: #090c9b;
+      --bg: #f5f7fb;
+      --text: #1e2430;
+      --muted: #5d6678;
+      --card: #ffffff;
+      --line: #dbe1ec;
+    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f8f9fc;
-      color: #1b1f2a;
-      line-height: 1.5;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
-    .wrap {
-      max-width: 880px;
-      margin: 40px auto;
-      padding: 0 20px;
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .topbar {
+      background: var(--brand);
+      color: #fff;
+      text-align: center;
+      padding: 10px 12px;
+      font-weight: 600;
+      font-size: 14px;
     }
-    .card {
-      background: #fff;
-      border: 1px solid #dfe3eb;
-      border-radius: 10px;
-      padding: 24px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-    }
-    h1 {
-      margin: 0 0 8px 0;
-      color: #090c9b;
-      font-size: 30px;
-    }
-    p { margin: 8px 0; }
-    .muted { color: #596173; }
-    .links {
-      margin-top: 18px;
+    .nav {
       display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 12px;
-      flex-wrap: wrap;
+      padding: 18px 0;
     }
-    a.button {
-      display: inline-block;
-      padding: 10px 14px;
-      border-radius: 8px;
-      text-decoration: none;
-      border: 1px solid #cfd5e3;
-      color: #1b1f2a;
+    .brand {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--brand);
+      margin: 0;
+    }
+    .cart {
       background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 12px;
       font-weight: 600;
     }
-    a.button.primary {
-      background: #090c9b;
+    .hero {
+      background: linear-gradient(135deg, #090c9b 0%, #3d43d6 100%);
       color: #fff;
-      border-color: #090c9b;
+      border-radius: 14px;
+      padding: 44px 26px;
+      margin-bottom: 24px;
     }
-    code {
-      background: #f2f4f8;
-      border: 1px solid #e3e7ef;
-      border-radius: 6px;
-      padding: 2px 6px;
+    .hero h2 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+    }
+    .hero p {
+      margin: 0;
+      opacity: 0.95;
+      max-width: 700px;
+    }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    input, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 15px;
+      background: #fff;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+    .card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      background: #eef2f9;
+    }
+    .body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+    .name {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .meta {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+    .desc {
+      margin: 0;
+      color: #3d4659;
+      font-size: 14px;
+      line-height: 1.45;
+      flex: 1;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .price {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand);
+    }
+    .btn {
+      border: none;
+      border-radius: 9px;
+      padding: 10px 12px;
+      font-weight: 700;
+      background: var(--brand);
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .empty {
+      padding: 24px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 10px;
+    }
+    footer {
+      padding: 28px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+    @media (max-width: 780px) {
+      .controls { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>SwiftDropship</h1>
-      <p class="muted">GitHub Pages deployment for the SwiftDropship project.</p>
-      <p>This project is built with Flask and SQLite, so dynamic features (login, cart, checkout, admin, database) require a Python server runtime and cannot run directly on GitHub Pages.</p>
-      <p>For full app hosting, deploy the backend app from this repository to a Python host (Render, Railway, Fly.io, or VPS).</p>
-      <div class="links">
-        <a class="button primary" href="https://github.com/mishraram27-bot/SwiftDropship" target="_blank" rel="noreferrer">Open Repository</a>
-        <a class="button" href="https://github.com/mishraram27-bot/SwiftDropship/actions" target="_blank" rel="noreferrer">View Deploy Workflow</a>
-      </div>
-      <p class="muted" style="margin-top: 16px;">Pages source: <code>/docs</code></p>
+  <div class="topbar">Free shipping above ₹999 · Trend-focused daily essentials</div>
+  <main class="wrap">
+    <div class="nav">
+      <h1 class="brand">SwiftDropship</h1>
+      <div class="cart">Cart: <span id="cartCount">0</span></div>
     </div>
-  </div>
+
+    <section class="hero">
+      <h2>Curated essentials for modern India</h2>
+      <p>Shop beauty, lifestyle, wellness, spiritual, and pet essentials in one place. This is the live static storefront running on GitHub Pages.</p>
+    </section>
+
+    <section class="controls">
+      <input id="searchInput" type="search" placeholder="Search products...">
+      <select id="categorySelect">
+        <option value="">All categories</option>
+        <option value="beauty">Beauty</option>
+        <option value="lifestyle">Lifestyle</option>
+        <option value="wellness">Wellness</option>
+        <option value="spiritual">Spiritual</option>
+        <option value="pets">Pets</option>
+      </select>
+    </section>
+
+    <section id="productGrid" class="grid"></section>
+    <div id="emptyState" class="empty" hidden>No products match your search.</div>
+  </main>
+
+  <footer>
+    SwiftDropship · GitHub Pages storefront preview
+  </footer>
+
+  <script>
+    const products = [
+      {id:1,name:"Niacinamide Serum 10%",category:"beauty",price:599,image:"https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800",desc:"K-beauty serum for pore refinement and oil control."},
+      {id:2,name:"Ceramide Moisturizer",category:"beauty",price:699,image:"https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800",desc:"Lightweight hydration with ceramides and hyaluronic acid."},
+      {id:3,name:"Smart Fitness Watch",category:"lifestyle",price:1299,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800",desc:"Track heart rate, sleep, and steps with 7-day battery life."},
+      {id:4,name:"Wireless Bluetooth Earbuds",category:"lifestyle",price:899,image:"https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=800",desc:"ANC earbuds for work, calls, and workouts."},
+      {id:5,name:"Brass Pooja Thali Set",category:"spiritual",price:799,image:"https://images.unsplash.com/photo-1604423043499-4138b903af7f?w=800",desc:"Traditional pooja thali set for daily worship rituals."},
+      {id:6,name:"Japa Mala Prayer Beads",category:"spiritual",price:599,image:"https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=800",desc:"108-bead sandalwood mala for meditation and prayer."},
+      {id:7,name:"Ashwagandha Capsules",category:"wellness",price:699,image:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800",desc:"Ayurvedic stress-support capsules for daily wellness."},
+      {id:8,name:"Premium Yoga Mat",category:"wellness",price:999,image:"https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800",desc:"Non-slip mat with alignment guides for better practice."},
+      {id:9,name:"Interactive Pet Toy Set",category:"pets",price:599,image:"https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=800",desc:"Puzzle and play toy set for active pets."},
+      {id:10,name:"Premium Pet Grooming Kit",category:"pets",price:899,image:"https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800",desc:"Complete grooming essentials for dogs and cats."}
+    ];
+
+    const grid = document.getElementById("productGrid");
+    const emptyState = document.getElementById("emptyState");
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const cartCount = document.getElementById("cartCount");
+
+    function getCart() {
+      try { return JSON.parse(localStorage.getItem("swiftdropship_cart") || "{}"); }
+      catch { return {}; }
+    }
+
+    function setCart(cart) {
+      localStorage.setItem("swiftdropship_cart", JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      const cart = getCart();
+      const total = Object.values(cart).reduce((a, b) => a + b, 0);
+      cartCount.textContent = total;
+    }
+
+    function addToCart(id) {
+      const cart = getCart();
+      cart[id] = (cart[id] || 0) + 1;
+      setCart(cart);
+    }
+
+    function filterProducts() {
+      const term = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      return products.filter((p) => {
+        const matchSearch = p.name.toLowerCase().includes(term) || p.desc.toLowerCase().includes(term);
+        const matchCategory = !category || p.category === category;
+        return matchSearch && matchCategory;
+      });
+    }
+
+    function render() {
+      const list = filterProducts();
+      grid.innerHTML = "";
+      emptyState.hidden = list.length !== 0;
+
+      list.forEach((p) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.name}">
+          <div class="body">
+            <p class="meta">${p.category}</p>
+            <h3 class="name">${p.name}</h3>
+            <p class="desc">${p.desc}</p>
+            <div class="row">
+              <div class="price">₹${p.price}</div>
+              <button class="btn" data-id="${p.id}">Add to Cart</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      grid.querySelectorAll("button[data-id]").forEach((button) => {
+        button.addEventListener("click", () => addToCart(button.dataset.id));
+      });
+    }
+
+    searchInput.addEventListener("input", render);
+    categorySelect.addEventListener("change", render);
+    updateCartCount();
+    render();
+  </script>
 </body>
 </html>

@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} — TrendVibe Essentials{% endblock %}
+{% block meta_description %}{{ product.description[:160] }}{% endblock %}
+{% block og_title %}{{ product.name }} — TrendVibe Essentials{% endblock %}
+{% block og_description %}{{ product.description[:160] }}{% endblock %}
+
+{% block content %}
+<div class="container my-4 my-md-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('index', category=product.category) }}">{{ product.category.title() }}</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Product Image -->
+        <div class="col-lg-5">
+            <div class="product-detail-img-wrap">
+                {% if product.image_url %}
+                    <img src="{{ product.image_url }}"
+                         alt="{{ product.name }}"
+                         id="product-main-img"
+                         title="Click to zoom"
+                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400';">
+                {% else %}
+                    <div class="img-placeholder d-flex align-items-center justify-content-center" style="height:440px;">
+                        <i class="fas fa-image fa-4x text-muted" aria-hidden="true"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Trust strip under image -->
+            <div class="product-trust-row mt-3">
+                <div class="product-trust-item">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>Secure Checkout
+                </div>
+                <div class="product-trust-item">
+                    <i class="fas fa-undo-alt" aria-hidden="true"></i>7-Day Returns
+                </div>
+                <div class="product-trust-item">
+                    <i class="fas fa-truck" aria-hidden="true"></i>Fast Dispatch
+                </div>
+                <div class="product-trust-item">
+                    <i class="fas fa-headset" aria-hidden="true"></i>24/7 Support
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-lg-7">
+            <!-- Category + Badges -->
+            <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
+                <span class="category-badge category-{{ product.category.lower() }}">
+                    {{ product.category.title() }}
+                </span>
+                <span class="product-badge badge-trending">Trending</span>
+                {% if product.id % 3 == 0 %}
+                    <span class="product-badge badge-bestseller">Best Seller</span>
+                {% endif %}
+            </div>
+
+            <!-- Product Name -->
+            <h1 style="font-family:'Poppins',sans-serif;font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:var(--ink);letter-spacing:-0.03em;margin-bottom:12px;">
+                {{ product.name }}
+            </h1>
+
+            <!-- Ratings row -->
+            <div class="d-flex align-items-center gap-2 mb-3" aria-label="Product rating">
+                <div class="d-flex gap-1" style="color:var(--gold);font-size:14px;">
+                    {% if avg_rating > 0 %}
+                        {% for i in range(1, 6) %}
+                            <i class="fas fa-star {% if i > avg_rating %}text-muted{% endif %}" aria-hidden="true"></i>
+                        {% endfor %}
+                        <span style="font-size:14px;font-weight:700;color:var(--ink);margin-left:4px;">{{ avg_rating }}/5</span>
+                        <a href="#reviews" style="font-size:13px;color:var(--slate);margin-left:4px;">({{ reviews|length }} review{{ 's' if reviews|length != 1 else '' }})</a>
+                    {% else %}
+                        {% for i in range(5) %}<i class="fas fa-star text-muted" aria-hidden="true"></i>{% endfor %}
+                        <a href="#write-review" style="font-size:13px;color:var(--primary);margin-left:6px;">Be first to review</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+                <div class="product-detail-price">
+                    <span class="price-label" style="font-size:15px;color:var(--slate);">Price</span><br>
+                    ₹{{ "%.0f"|format(product.price) }}
+                </div>
+                <div style="font-size:13px;color:var(--mint);margin-top:6px;">
+                    <i class="fas fa-check-circle me-1" aria-hidden="true"></i>
+                    {% if product.price >= 999 %}Free shipping on this order{% else %}Free shipping above ₹999{% endif %}
+                </div>
+            </div>
+
+            <!-- Urgency Signal -->
+            <div class="urgency-signal mb-4">
+                <i class="fas fa-fire-alt" aria-hidden="true"></i>
+                <span>{{ (product.id * 13) % 28 + 6 }} people viewed this in the last 24 hours</span>
+            </div>
+
+            <!-- Key Benefits -->
+            <div class="mb-4">
+                <h6 style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:12px;">Why You'll Love This</h6>
+                <ul class="benefit-bullets" aria-label="Product benefits">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i>Curated for modern everyday use</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i>Premium quality at an accessible price point</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i>{{ product.description[:90] }}{% if product.description|length > 90 %}...{% endif %}</li>
+                </ul>
+            </div>
+
+            <!-- Add to Cart -->
+            <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="mb-4" id="add-to-cart-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <div class="d-flex gap-3 align-items-end flex-wrap">
+                    <div>
+                        <label for="quantity" class="form-label" style="font-size:13px;">Qty</label>
+                        <select name="quantity" id="quantity" class="form-select" style="width:90px;" aria-label="Select quantity">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg flex-grow-1" id="add-to-cart-btn">
+                        <i class="fas fa-shopping-bag me-2" aria-hidden="true"></i>Add to Cart
+                    </button>
+                    {% if session.user_id %}
+                        <button type="button"
+                                class="btn btn-lg wishlist-btn {% if is_in_wishlist(product.id) %}is-wishlisted{% endif %}"
+                                data-product-id="{{ product.id }}"
+                                style="border:1.5px solid var(--border);background:white;width:52px;border-radius:16px;flex-shrink:0;"
+                                aria-label="{{ 'Remove from wishlist' if is_in_wishlist(product.id) else 'Save to wishlist' }}">
+                            <i class="fas fa-heart {% if is_in_wishlist(product.id) %}text-danger{% endif %}" aria-hidden="true"></i>
+                        </button>
+                    {% endif %}
+                </div>
+            </form>
+
+            <!-- Description -->
+            <div class="mb-4" style="border-top:1px solid var(--border);padding-top:20px;">
+                <h6 style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;">About This Product</h6>
+                <p style="font-size:14px;color:var(--slate);line-height:1.7;">{{ product.description }}</p>
+                <div style="font-size:13px;color:var(--slate);">
+                    <i class="fas fa-store me-2" aria-hidden="true"></i>
+                    Sourced from <strong>{{ product.supplier }}</strong>
+                </div>
+            </div>
+
+            <!-- Shipping Info Box -->
+            <div style="background:var(--soft-white);border:1px solid var(--border);border-radius:14px;padding:16px;">
+                <div class="row g-3 text-center" style="font-size:13px;">
+                    <div class="col-4">
+                        <i class="fas fa-truck" style="color:var(--primary);font-size:20px;margin-bottom:6px;display:block;" aria-hidden="true"></i>
+                        <strong style="color:var(--ink);">2–5 Days</strong><br>
+                        <span style="color:var(--slate);">Delivery</span>
+                    </div>
+                    <div class="col-4" style="border-left:1px solid var(--border);border-right:1px solid var(--border);">
+                        <i class="fas fa-undo-alt" style="color:var(--mint);font-size:20px;margin-bottom:6px;display:block;" aria-hidden="true"></i>
+                        <strong style="color:var(--ink);">7 Days</strong><br>
+                        <span style="color:var(--slate);">Easy Returns</span>
+                    </div>
+                    <div class="col-4">
+                        <i class="fas fa-lock" style="color:var(--gold);font-size:20px;margin-bottom:6px;display:block;" aria-hidden="true"></i>
+                        <strong style="color:var(--ink);">100%</strong><br>
+                        <span style="color:var(--slate);">Secure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="mt-5 pt-4" id="reviews" style="border-top:1px solid var(--border);">
+        <div class="row g-5">
+            <!-- Review Summary -->
+            <div class="col-lg-3">
+                <h3 style="font-family:'Poppins',sans-serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:20px;">
+                    Customer Reviews
+                </h3>
+                {% if reviews %}
+                    <div style="text-align:center;margin-bottom:24px;">
+                        <div style="font-family:'Poppins',sans-serif;font-size:3.5rem;font-weight:800;color:var(--ink);line-height:1;">{{ avg_rating }}</div>
+                        <div style="color:var(--gold);font-size:18px;margin:6px 0;">
+                            {% for i in range(1, 6) %}
+                                <i class="fas fa-star {% if i > avg_rating %}text-muted{% endif %}" aria-hidden="true"></i>
+                            {% endfor %}
+                        </div>
+                        <div style="font-size:13px;color:var(--slate);">{{ reviews|length }} review{{ 's' if reviews|length != 1 else '' }}</div>
+                    </div>
+                    <!-- Rating bars -->
+                    {% for stars in range(5, 0, -1) %}
+                        {% set count = reviews|selectattr('rating', 'equalto', stars)|list|length %}
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label" aria-label="{{ stars }} star">{{ stars }}</span>
+                            <div class="rating-bar-track" role="progressbar" aria-valuenow="{{ (count / reviews|length * 100)|int if reviews else 0 }}" aria-valuemin="0" aria-valuemax="100">
+                                <div class="rating-bar-fill" style="width:{{ (count / reviews|length * 100)|int if reviews else 0 }}%;"></div>
+                            </div>
+                            <span class="rating-bar-count">{{ count }}</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="font-size:14px;color:var(--slate);">No reviews yet. Be the first!</p>
+                {% endif %}
+            </div>
+
+            <!-- Write a Review + Reviews List -->
+            <div class="col-lg-9">
+                {% if session.user_id %}
+                    <div class="review-card mb-4" id="write-review">
+                        <h5 style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:16px;">
+                            <i class="fas fa-pen me-2" aria-hidden="true"></i>
+                            {{ 'Update Your Review' if user_review else 'Write a Review' }}
+                        </h5>
+                        <form method="POST" action="{{ url_for('add_review', product_id=product.id) }}" aria-label="Product review form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            <div class="mb-3">
+                                <label class="form-label">Your Rating <span class="text-danger" aria-label="required">*</span></label>
+                                <div class="star-rating d-flex gap-3" role="group" aria-label="Select rating">
+                                    {% for i in range(5, 0, -1) %}
+                                        <div class="form-check form-check-inline m-0">
+                                            <input class="form-check-input visually-hidden" type="radio" name="rating"
+                                                   id="star{{ i }}" value="{{ i }}"
+                                                   {% if user_review and user_review.rating == i %}checked
+                                                   {% elif not user_review and i == 5 %}checked{% endif %}
+                                                   required aria-label="{{ i }} star{{ 's' if i != 1 else '' }}">
+                                            <label class="form-check-label fs-4" for="star{{ i }}" title="{{ i }} star{{ 's' if i != 1 else '' }}" style="cursor:pointer;color:var(--border);transition:color 0.2s;">
+                                                <i class="fas fa-star {% if user_review and user_review.rating >= i %}text-warning{% endif %}" aria-hidden="true"></i>
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">Your Review <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                                <textarea class="form-control" id="comment" name="comment" rows="3"
+                                          placeholder="Share your experience with this product..."
+                                          aria-label="Review comment">{{ user_review.comment if user_review else '' }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>
+                                {{ 'Update Review' if user_review else 'Submit Review' }}
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-4" id="write-review">
+                        <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
+                        <a href="{{ url_for('login') }}" class="alert-link">Log in</a> to write a review.
+                    </div>
+                {% endif %}
+
+                {% if reviews %}
+                    {% for review in reviews %}
+                        <div class="review-card {% if review.user_id == session.get('user_id') %}own-review{% endif %}">
+                            <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                                <div>
+                                    <strong style="font-size:14px;color:var(--ink);">{{ review.user.username }}</strong>
+                                    {% if review.user_id == session.get('user_id') %}
+                                        <span class="product-badge badge-trending ms-2" style="font-size:10px;">Your Review</span>
+                                    {% endif %}
+                                </div>
+                                <small style="color:var(--muted);font-size:12px;">{{ review.created_at.strftime('%d %b %Y') }}</small>
+                            </div>
+                            <div class="d-flex gap-1 mb-2" aria-label="Rating: {{ review.rating }} out of 5 stars">
+                                {% for i in range(1, 6) %}
+                                    <i class="fas fa-star {% if i <= review.rating %}text-warning{% else %}text-muted{% endif %}" style="font-size:13px;" aria-hidden="true"></i>
+                                {% endfor %}
+                            </div>
+                            {% if review.comment %}
+                                <p style="font-size:14px;color:var(--slate);margin:0;line-height:1.6;">{{ review.comment }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="font-size:14px;color:var(--slate);">No reviews yet — be the first to share your experience!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    {% if recommendations %}
+    <div class="recommendations-section">
+        <h3><i class="fas fa-magic me-2" aria-hidden="true"></i>You May Also Like</h3>
+        <div class="row g-4">
+            {% set badge_list = ['Trending', 'Best Seller', 'New Drop', "Editor's Pick"] %}
+            {% set badge_classes = ['badge-trending', 'badge-bestseller', 'badge-newdrop', 'badge-editor'] %}
+            {% for rec_product in recommendations %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card product-card h-100 border-0">
+                        <div class="product-card-img-wrap">
+                            {% if rec_product.image_url %}
+                                <img src="{{ rec_product.image_url }}" class="card-img-top" alt="{{ rec_product.name }}" loading="lazy">
+                            {% else %}
+                                <div class="card-img-top img-placeholder d-flex align-items-center justify-content-center" style="height:200px;">
+                                    <i class="fas fa-image fa-2x text-muted" aria-hidden="true"></i>
+                                </div>
+                            {% endif %}
+                            <div class="product-card-badge">
+                                <span class="product-badge {{ badge_classes[loop.index0 % 4] }}">{{ badge_list[loop.index0 % 4] }}</span>
+                            </div>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <span class="category-badge category-{{ rec_product.category.lower() }}">{{ rec_product.category.title() }}</span>
+                            <h6 class="card-title mt-2">{{ rec_product.name }}</h6>
+                            <div class="product-card-footer mt-auto">
+                                <div class="product-card-price" style="font-size:1.1rem;">₹{{ "%.0f"|format(rec_product.price) }}</div>
+                                <a href="{{ url_for('product_detail', product_id=rec_product.id) }}" class="btn-add-cart">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Sticky Mobile Add-to-Cart -->
+<div class="sticky-mobile-cta" role="complementary" aria-label="Add to cart">
+    <div class="d-flex gap-2 align-items-center">
+        <div style="flex:1;">
+            <div style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--ink);line-height:1.2;">{{ product.name }}</div>
+            <div style="font-size:16px;font-weight:800;color:var(--primary);">₹{{ "%.0f"|format(product.price) }}</div>
+        </div>
+        <button form="add-to-cart-form" type="submit" class="btn btn-primary" style="flex-shrink:0;border-radius:14px;padding:12px 24px;">
+            <i class="fas fa-shopping-bag me-2" aria-hidden="true"></i>Add to Cart
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Quantity change shows total
+var priceVal = {{ product.price }};
+document.getElementById('quantity').addEventListener('change', function() {
+    var total = parseInt(this.value) * priceVal;
+    // Could update a dynamic total display
+});
+
+// Add to cart animation
+document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
+    var btn = document.getElementById('add-to-cart-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Adding...';
+    btn.disabled = true;
+    setTimeout(function() {
+        btn.innerHTML = '<i class="fas fa-shopping-bag me-2"></i>Add to Cart';
+        btn.disabled = false;
+    }, 2000);
+});
+
+// Star rating interactive highlight
+(function() {
+    var labels = document.querySelectorAll('.star-rating .form-check-label');
+    labels.forEach(function(label, i) {
+        label.addEventListener('mouseenter', function() {
+            labels.forEach(function(l, j) {
+                l.querySelector('i').style.color = j >= i ? '#F59E0B' : '#CBD5E1';
+            });
+        });
+        label.addEventListener('mouseleave', function() {
+            labels.forEach(function(l) {
+                var radio = l.previousElementSibling;
+                l.querySelector('i').style.color = radio && radio.checked ? '#F59E0B' : '#CBD5E1';
+            });
+        });
+    });
+})();
+
+// Scroll-based sticky CTA on mobile
+var stickyCta = document.querySelector('.sticky-mobile-cta');
+var addToCartSection = document.getElementById('add-to-cart-form');
+if (stickyCta && addToCartSection) {
+    window.addEventListener('scroll', function() {
+        var rect = addToCartSection.getBoundingClientRect();
+        stickyCta.style.opacity = rect.bottom < 0 ? '1' : '0';
+        stickyCta.style.pointerEvents = rect.bottom < 0 ? 'auto' : 'none';
+    }, { passive: true });
+    stickyCta.style.opacity = '0';
+    stickyCta.style.pointerEvents = 'none';
+    stickyCta.style.transition = 'opacity 0.25s ease';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TrendVibe Essentials — Curated Lifestyle Brand{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}TrendVibe Essentials — curated beauty, lifestyle, wellness, and spiritual products for modern urban India. Fast delivery, easy returns.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}beauty, skincare, K-beauty, wellness, spiritual, pooja, lifestyle, India, online shopping, trending products{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}TrendVibe Essentials{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Curated trending essentials for modern Indian living. Premium feel, practical prices.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#4F46E5">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts: Poppins + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- CSRF Token for AJAX -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" class="visually-hidden-focusable btn btn-primary position-absolute" style="top:0;left:0;z-index:9999;">
+        Skip to main content
+    </a>
+
+    <!-- Announcement Strip -->
+    <div class="announcement-strip" role="banner">
+        <i class="fas fa-truck me-2" aria-hidden="true"></i>
+        Free shipping above ₹999 &nbsp;·&nbsp;
+        Curated essentials for modern living &nbsp;·&nbsp;
+        <a href="{{ url_for('index') }}">Shop Now →</a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}" aria-label="TrendVibe Essentials Home">
+                <i class="fas fa-fire brand-icon" aria-hidden="true"></i>TrendVibe
+            </a>
+
+            <div class="d-flex align-items-center gap-2 d-lg-none">
+                <!-- Mobile cart icon -->
+                <a href="{{ url_for('cart') }}" class="nav-icon-link position-relative">
+                    <i class="fas fa-shopping-bag" style="font-size:18px;"></i>
+                    {% if session.cart %}
+                        <span class="nav-badge" style="position:absolute;top:-4px;right:-6px;">{{ session.cart.values() | sum }}</span>
+                    {% endif %}
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                    <i class="fas fa-bars" style="color:var(--ink);font-size:18px;"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Collections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index', category='beauty') }}">
+                                    <i class="fas fa-spa me-2" style="color:#BE123C;"></i>Beauty & Skincare
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index', category='lifestyle') }}">
+                                    <i class="fas fa-bolt me-2" style="color:#0F766E;"></i>Lifestyle & Tech
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index', category='wellness') }}">
+                                    <i class="fas fa-leaf me-2" style="color:#A16207;"></i>Health & Wellness
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index', category='spiritual') }}">
+                                    <i class="fas fa-om me-2" style="color:#7E22CE;"></i>Pooja & Spiritual
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('index', category='pets') }}">
+                                    <i class="fas fa-paw me-2" style="color:#1D4ED8;"></i>Pet Supplies
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index', sort='newest') }}">New Drops</a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav align-items-lg-center gap-1">
+                    <li class="nav-item">
+                        <a class="nav-icon-link" href="{{ url_for('wishlist') }}" aria-label="Wishlist">
+                            <i class="fas fa-heart" aria-hidden="true"></i>
+                            <span class="d-none d-lg-inline">Wishlist</span>
+                            {% if session.user_id %}
+                                <span id="wishlist-count" class="nav-badge">{{ get_wishlist_count() }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <a class="nav-icon-link position-relative" href="{{ url_for('cart') }}" aria-label="Cart">
+                            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+                            <span>Cart</span>
+                            {% if session.cart %}
+                                <span class="nav-badge">{{ session.cart.values() | sum }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    {% if session.user_id %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-icon-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle" aria-hidden="true"></i>
+                                <span>{{ session.username }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                {% if is_admin() %}
+                                    <li>
+                                        <a class="dropdown-item" href="{{ url_for('admin_dashboard') }}">
+                                            <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('my_orders') }}">
+                                        <i class="fas fa-box me-2"></i>My Orders
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ url_for('wishlist') }}">
+                                        <i class="fas fa-heart me-2"></i>My Wishlist
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{{ url_for('logout') }}">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm ms-2">
+                                Sign Up Free
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {% if category == 'success' %}<i class="fas fa-check-circle me-2" aria-hidden="true"></i>
+                        {% elif category == 'error' %}<i class="fas fa-exclamation-triangle me-2" aria-hidden="true"></i>
+                        {% elif category == 'info' %}<i class="fas fa-info-circle me-2" aria-hidden="true"></i>
+                        {% endif %}
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Brand Column -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand-name">
+                        <i class="fas fa-fire me-2" style="color:var(--coral);" aria-hidden="true"></i>TrendVibe
+                    </div>
+                    <p class="footer-brand-tagline">
+                        Premium-feel essentials for modern India. Curated for the trend-aware, priced for everyone.
+                    </p>
+                    <div class="footer-social">
+                        <a href="javascript:void(0)" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="javascript:void(0)" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="javascript:void(0)" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
+                        <a href="javascript:void(0)" aria-label="Pinterest"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+
+                <!-- Collections -->
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h6 class="footer-heading">Collections</h6>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('index', category='beauty') }}">Beauty & Skincare</a></li>
+                        <li><a href="{{ url_for('index', category='lifestyle') }}">Lifestyle & Tech</a></li>
+                        <li><a href="{{ url_for('index', category='wellness') }}">Health & Wellness</a></li>
+                        <li><a href="{{ url_for('index', category='spiritual') }}">Pooja & Spiritual</a></li>
+                        <li><a href="{{ url_for('index', category='pets') }}">Pet Supplies</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div class="col-lg-2 col-md-3 col-6">
+                    <h6 class="footer-heading">Support</h6>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('index') }}">Track Order</a></li>
+                        <li><a href="{{ url_for('index') }}">Returns & Refunds</a></li>
+                        <li><a href="{{ url_for('index') }}">Shipping Info</a></li>
+                        <li><a href="{{ url_for('index') }}">FAQ</a></li>
+                        <li><a href="{{ url_for('index') }}">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="col-lg-4 col-md-6">
+                    <h6 class="footer-heading">Stay in the Loop</h6>
+                    <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:14px;">
+                        Get new drops, exclusive offers, and curated picks — straight to your inbox.
+                    </p>
+                    <input type="email" class="footer-newsletter-input" placeholder="Enter your email address" aria-label="Newsletter email">
+                    <button class="btn btn-primary btn-sm w-100" style="border-radius:10px;">
+                        <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>Subscribe
+                    </button>
+                    <div class="mt-3" style="font-size:11px;color:rgba(255,255,255,0.3);">
+                        <a href="{{ url_for('privacy_policy') }}" style="color:rgba(255,255,255,0.4);">Privacy Policy</a>
+                        &nbsp;·&nbsp;
+                        <a href="{{ url_for('terms_of_service') }}" style="color:rgba(255,255,255,0.4);">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="footer-divider">
+
+            <div class="row align-items-center">
+                <div class="col-md-6 footer-bottom">
+                    &copy; 2026 TrendVibe Essentials. Made with <i class="fas fa-heart" style="color:var(--coral);" aria-hidden="true"></i> for modern India.
+                </div>
+                <div class="col-md-6 text-md-end footer-bottom mt-2 mt-md-0">
+                    <span style="color:rgba(255,255,255,0.25);">Secure payments &nbsp;·&nbsp; Easy returns &nbsp;·&nbsp; Fast delivery</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+        <a href="{{ url_for('index') }}" aria-label="Home">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            Home
+        </a>
+        <a href="{{ url_for('index') }}#products" aria-label="Browse">
+            <i class="fas fa-compass" aria-hidden="true"></i>
+            Browse
+        </a>
+        <a href="{{ url_for('wishlist') }}" aria-label="Wishlist">
+            <i class="fas fa-heart" aria-hidden="true"></i>
+            Wishlist
+            {% if session.user_id and get_wishlist_count() > 0 %}
+                <span class="mnav-badge">{{ get_wishlist_count() }}</span>
+            {% endif %}
+        </a>
+        <a href="{{ url_for('cart') }}" aria-label="Cart">
+            <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+            Cart
+            {% if session.cart %}
+                <span class="mnav-badge">{{ session.cart.values() | sum }}</span>
+            {% endif %}
+        </a>
+        {% if session.user_id %}
+            <a href="{{ url_for('my_orders') }}" aria-label="Account">
+                <i class="fas fa-user-circle" aria-hidden="true"></i>
+                Account
+            </a>
+        {% else %}
+            <a href="{{ url_for('login') }}" aria-label="Login">
+                <i class="fas fa-user-circle" aria-hidden="true"></i>
+                Login
+            </a>
+        {% endif %}
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}Your Cart — TrendVibe Essentials{% endblock %}
+
+{% block content %}
+<div class="container my-4 my-md-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h1 style="font-family:'Poppins',sans-serif;font-size:1.8rem;font-weight:800;color:var(--ink);letter-spacing:-0.04em;">
+                <i class="fas fa-shopping-bag me-2" style="color:var(--primary);" aria-hidden="true"></i>
+                Your Cart
+                {% if items %}<span style="font-size:14px;font-weight:500;color:var(--slate);margin-left:8px;">{{ items|length }} item{{ 's' if items|length != 1 else '' }}</span>{% endif %}
+            </h1>
+        </div>
+    </div>
+
+    {% if items %}
+        <div class="row g-4">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                {% for item in items %}
+                    <div class="cart-item">
+                        <div class="row align-items-center g-3">
+                            <div class="col-auto">
+                                {% if item.product.image_url %}
+                                    <img src="{{ item.product.image_url }}"
+                                         alt="{{ item.product.name }}"
+                                         style="width:80px;height:80px;object-fit:cover;border-radius:12px;">
+                                {% else %}
+                                    <div class="img-placeholder rounded-3 d-flex align-items-center justify-content-center"
+                                         style="width:80px;height:80px;">
+                                        <i class="fas fa-image text-muted" aria-hidden="true"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col">
+                                <a href="{{ url_for('product_detail', product_id=item.product.id) }}"
+                                   class="text-decoration-none"
+                                   style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:var(--ink);display:block;margin-bottom:4px;">
+                                    {{ item.product.name }}
+                                </a>
+                                <span class="category-badge category-{{ item.product.category.lower() }}">{{ item.product.category.title() }}</span>
+                                <div style="font-size:12px;color:var(--muted);margin-top:4px;">Sold by {{ item.product.supplier }}</div>
+                            </div>
+
+                            <div class="col-auto text-center">
+                                <div style="font-size:12px;color:var(--slate);margin-bottom:4px;">Price</div>
+                                <div style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--ink);">₹{{ "%.0f"|format(item.product.price) }}</div>
+                            </div>
+
+                            <div class="col-auto">
+                                <div style="font-size:12px;color:var(--slate);margin-bottom:4px;text-align:center;">Qty</div>
+                                <div class="quantity-controls">
+                                    <form method="POST" action="{{ url_for('update_cart') }}" class="d-inline">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                        <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                        <input type="hidden" name="action" value="decrease">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm" aria-label="Decrease quantity">
+                                            <i class="fas fa-minus" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                    <span style="font-weight:700;font-size:15px;min-width:24px;text-align:center;" aria-label="Quantity: {{ item.quantity }}">{{ item.quantity }}</span>
+                                    <form method="POST" action="{{ url_for('update_cart') }}" class="d-inline">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                        <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                        <input type="hidden" name="action" value="increase">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm" aria-label="Increase quantity">
+                                            <i class="fas fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="col-auto text-center">
+                                <div style="font-size:12px;color:var(--slate);margin-bottom:4px;">Total</div>
+                                <div style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;color:var(--primary);">₹{{ "%.0f"|format(item.total) }}</div>
+                            </div>
+
+                            <div class="col-auto">
+                                <form method="POST" action="{{ url_for('update_cart') }}" class="d-inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                    <input type="hidden" name="action" value="remove">
+                                    <button type="submit" class="btn btn-sm" style="border:none;background:none;color:var(--muted);font-size:16px;" aria-label="Remove {{ item.product.name }} from cart">
+                                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- Cart trust row -->
+                <div class="cart-trust-row">
+                    <div class="cart-trust-item">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>Secure Payment
+                    </div>
+                    <div class="cart-trust-item">
+                        <i class="fas fa-truck" aria-hidden="true"></i>Fast Dispatch
+                    </div>
+                    <div class="cart-trust-item">
+                        <i class="fas fa-undo-alt" aria-hidden="true"></i>7-Day Returns
+                    </div>
+                    <div class="cart-trust-item">
+                        <i class="fas fa-headset" aria-hidden="true"></i>24/7 Support
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="checkout-summary">
+                    <h4>Order Summary</h4>
+
+                    <div class="d-flex justify-content-between mb-2" style="font-size:14px;">
+                        <span style="color:var(--slate);">Subtotal ({{ items|length }} item{{ 's' if items|length != 1 else '' }})</span>
+                        <span style="font-weight:600;">₹{{ "%.0f"|format(total) }}</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2" style="font-size:14px;">
+                        <span style="color:var(--slate);">Shipping</span>
+                        <span style="font-weight:600;color:{% if total >= 1000 %}var(--mint){% else %}var(--ink){% endif %};">
+                            {% if total >= 1000 %}Free ✓{% else %}₹50{% endif %}
+                        </span>
+                    </div>
+
+                    {% if total < 1000 %}
+                        <div class="alert alert-info" style="font-size:12px;padding:10px 12px;margin-bottom:12px;">
+                            <i class="fas fa-info-circle me-1" aria-hidden="true"></i>
+                            Add ₹{{ "%.0f"|format(1000 - total) }} more for <strong>free shipping!</strong>
+                        </div>
+                    {% endif %}
+
+                    <!-- Coupon Section -->
+                    {% if session.user_id %}
+                        <div class="mb-3 pt-2 border-top">
+                            <div style="font-size:12px;font-weight:600;color:var(--slate);margin-bottom:8px;">
+                                <i class="fas fa-tag me-1" aria-hidden="true"></i>Discount Code
+                            </div>
+                            {% if session.coupon_code %}
+                                <div class="d-flex align-items-center gap-2 p-2"
+                                     style="background:var(--mint);background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:10px;">
+                                    <i class="fas fa-check-circle" style="color:var(--mint);" aria-hidden="true"></i>
+                                    <span style="font-size:13px;font-weight:700;color:#15803D;flex:1;">{{ session.coupon_code }} — {{ session.coupon_discount|int }}% off</span>
+                                    <button type="button" class="btn btn-sm" id="remove-coupon-btn"
+                                            style="font-size:11px;padding:3px 8px;border:1px solid #BE123C;color:#BE123C;border-radius:8px;background:none;"
+                                            aria-label="Remove coupon">
+                                        Remove
+                                    </button>
+                                </div>
+                            {% else %}
+                                <div class="input-group" style="font-size:13px;">
+                                    <input type="text" class="form-control" id="coupon_code"
+                                           placeholder="e.g. WELCOME10"
+                                           aria-label="Coupon code"
+                                           style="padding:10px 12px;font-size:13px;">
+                                    <button class="btn btn-primary btn-sm" type="button" id="apply-coupon-btn"
+                                            style="border-radius:0 10px 10px 0;font-size:13px;">Apply</button>
+                                </div>
+                                <div id="coupon-message" class="mt-1" aria-live="polite" style="font-size:12px;"></div>
+                                <div style="font-size:11px;color:var(--muted);margin-top:4px;">Try: WELCOME10, BEAUTY20, WELLNESS15</div>
+                            {% endif %}
+                        </div>
+
+                        {% if session.coupon_discount %}
+                            <div class="d-flex justify-content-between mb-2" style="font-size:14px;color:var(--mint);">
+                                <span>Discount ({{ session.coupon_discount|int }}%)</span>
+                                <span style="font-weight:700;">-₹{{ "%.0f"|format(total * (session.coupon_discount / 100)) }}</span>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <div class="d-flex justify-content-between mb-4 pt-3 border-top">
+                        <strong style="font-size:16px;">Total</strong>
+                        <strong style="font-family:'Poppins',sans-serif;font-size:20px;color:var(--primary);">
+                            ₹{% if session.coupon_discount %}{{ "%.0f"|format(total - total * (session.coupon_discount / 100) + (50 if total < 1000 else 0)) }}{% else %}{{ "%.0f"|format(total + (50 if total < 1000 else 0)) }}{% endif %}
+                        </strong>
+                    </div>
+
+                    {% if session.user_id %}
+                        <a href="{{ url_for('checkout') }}" class="btn btn-primary w-100 btn-lg" style="border-radius:14px;">
+                            <i class="fas fa-lock me-2" aria-hidden="true"></i>Proceed to Checkout
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="btn btn-primary w-100 btn-lg" style="border-radius:14px;">
+                            <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>Login to Checkout
+                        </a>
+                    {% endif %}
+
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('index') }}" class="text-decoration-none" style="font-size:13px;color:var(--slate);">
+                            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i>Continue Shopping
+                        </a>
+                    </div>
+
+                    <!-- Payment icons -->
+                    <div class="text-center mt-4 pt-3 border-top">
+                        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">Secure payments via</div>
+                        <div style="display:flex;justify-content:center;gap:12px;color:var(--slate);font-size:20px;">
+                            <i class="fas fa-credit-card" title="Cards" aria-hidden="true"></i>
+                            <i class="fab fa-google-pay" title="Google Pay" aria-hidden="true" style="font-size:18px;"></i>
+                            <i class="fas fa-university" title="Net Banking" aria-hidden="true"></i>
+                            <i class="fas fa-mobile-alt" title="UPI" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- Empty Cart State -->
+        <div class="cart-empty-state">
+            <div class="cart-empty-icon">
+                <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+            </div>
+            <h3 style="font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;color:var(--ink);margin-bottom:8px;">
+                Your cart is waiting for something good
+            </h3>
+            <p style="font-size:15px;color:var(--slate);max-width:400px;margin:0 auto 28px;">
+                Explore curated picks our shoppers are loving this week.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg" style="border-radius:14px;">
+                    <i class="fas fa-compass me-2" aria-hidden="true"></i>Shop Trending
+                </a>
+                <a href="{{ url_for('index', category='beauty') }}" class="btn btn-outline-primary btn-lg" style="border-radius:14px;">
+                    <i class="fas fa-spa me-2" aria-hidden="true"></i>Beauty Picks
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Coupon code AJAX
+var applyCouponBtn = document.getElementById('apply-coupon-btn');
+var removeCouponBtn = document.getElementById('remove-coupon-btn');
+var couponMsg = document.getElementById('coupon-message');
+
+if (applyCouponBtn) {
+    applyCouponBtn.addEventListener('click', function() {
+        var code = document.getElementById('coupon_code').value.trim();
+        if (!code) return;
+        var formData = new FormData();
+        formData.append('coupon_code', code);
+        formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
+        applyCouponBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        applyCouponBtn.disabled = true;
+        fetch('/apply_coupon', { method: 'POST', body: formData })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    couponMsg.innerHTML = '<span style="color:var(--mint);"><i class="fas fa-check me-1"></i>' + data.message + '</span>';
+                    setTimeout(function() { location.reload(); }, 600);
+                } else {
+                    couponMsg.innerHTML = '<span style="color:var(--coral);"><i class="fas fa-times me-1"></i>' + data.message + '</span>';
+                    applyCouponBtn.innerHTML = 'Apply';
+                    applyCouponBtn.disabled = false;
+                }
+            });
+    });
+}
+
+if (removeCouponBtn) {
+    removeCouponBtn.addEventListener('click', function() {
+        var formData = new FormData();
+        formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
+        fetch('/remove_coupon', { method: 'POST', body: formData })
+            .then(function(r) { return r.json(); })
+            .then(function(data) { if (data.success) location.reload(); });
+    });
+}
+</script>
+{% endblock %}

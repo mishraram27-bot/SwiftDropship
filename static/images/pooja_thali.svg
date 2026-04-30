@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#FFF7ED"/>
+      <stop offset="100%" stop-color="#FEF3C7"/>
+    </radialGradient>
+    <radialGradient id="plate" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="60%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <!-- Decorative border pattern -->
+  <rect x="10" y="10" width="380" height="380" rx="20" fill="none" stroke="#F59E0B" stroke-width="2" stroke-dasharray="8,4"/>
+  <!-- Thali plate (circle) -->
+  <circle cx="200" cy="200" r="150" fill="none" stroke="#D97706" stroke-width="3"/>
+  <circle cx="200" cy="200" r="140" fill="url(#plate)" opacity="0.9"/>
+  <!-- Inner decorative ring -->
+  <circle cx="200" cy="200" r="130" fill="none" stroke="#92400E" stroke-width="1.5" opacity="0.4"/>
+  <!-- Om symbol -->
+  <text x="200" y="185" text-anchor="middle" font-size="56" fill="#92400E" font-family="serif" opacity="0.8">ॐ</text>
+  <!-- Diya flame shapes -->
+  <ellipse cx="200" cy="310" rx="25" ry="12" fill="#B45309"/>
+  <path d="M190,310 Q200,285 210,310" fill="#FCD34D"/>
+  <path d="M193,305 Q200,290 207,305" fill="#FBBF24"/>
+  <!-- Decorative dots around rim -->
+  <circle cx="200" cy="62" r="5" fill="#D97706"/>
+  <circle cx="270" cy="88" r="5" fill="#D97706"/>
+  <circle cx="320" cy="155" r="5" fill="#D97706"/>
+  <circle cx="335" cy="235" r="5" fill="#D97706"/>
+  <circle cx="305" cy="310" r="5" fill="#D97706"/>
+  <circle cx="240" cy="350" r="5" fill="#D97706"/>
+  <circle cx="165" cy="350" r="5" fill="#D97706"/>
+  <circle cx="95" cy="310" r="5" fill="#D97706"/>
+  <circle cx="65" cy="235" r="5" fill="#D97706"/>
+  <circle cx="80" cy="155" r="5" fill="#D97706"/>
+  <circle cx="130" cy="88" r="5" fill="#D97706"/>
+</svg>

@@ -1,0 +1,475 @@
+{% extends "base.html" %}
+
+{% block title %}TrendVibe Essentials — Upgrade Your Everyday{% endblock %}
+{% block meta_description %}Shop curated beauty, lifestyle, wellness, and spiritual products. Premium-feel essentials at prices that make sense. Fast delivery across India.{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero Section ─────────────────────────────────────── -->
+<section class="hero-section">
+    <div class="container position-relative" style="z-index:2;">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-7">
+                <div class="hero-pill-badge">
+                    <i class="fas fa-fire-alt" aria-hidden="true"></i>
+                    <span>500+</span> curated products loved by modern India
+                </div>
+                <h1 class="hero-headline">
+                    Upgrade<br>Your <span>Everyday</span>
+                </h1>
+                <p class="hero-subline">
+                    Premium-looking essentials at prices that make sense — from K-beauty to smart lifestyle picks, all curated for you.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="#products" class="btn btn-light btn-lg" style="font-weight:700;border-radius:16px;">
+                        <i class="fas fa-compass me-2" aria-hidden="true"></i>Shop Trending
+                    </a>
+                    <a href="{{ url_for('index', category='beauty') }}" class="btn btn-lg" style="background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.3);color:white;border-radius:16px;font-weight:600;">
+                        <i class="fas fa-spa me-2" aria-hidden="true"></i>Explore Beauty
+                    </a>
+                </div>
+                <div class="hero-stat-chips">
+                    <div class="hero-stat">
+                        <div class="stat-num">4.8★</div>
+                        <div class="stat-label">Avg Rating</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-num">₹999</div>
+                        <div class="stat-label">Free Shipping</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-num">2–5d</div>
+                        <div class="stat-label">Delivery</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="stat-num">7d</div>
+                        <div class="stat-label">Easy Returns</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <div style="position:relative;display:inline-block;">
+                    <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=480&h=480&fit=crop&crop=center"
+                         alt="Curated beauty essentials"
+                         style="width:360px;height:360px;object-fit:cover;border-radius:32px;box-shadow:0 24px 64px rgba(0,0,0,0.35);">
+                    <div style="position:absolute;bottom:-16px;right:-16px;background:white;border-radius:16px;padding:12px 18px;box-shadow:0 8px 24px rgba(0,0,0,0.15);">
+                        <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#0F172A;margin-bottom:4px;">✨ New Drop</div>
+                        <div style="font-size:11px;color:#475569;">K-Beauty Serum Set</div>
+                        <div style="font-size:13px;font-weight:800;color:#4F46E5;margin-top:2px;">₹799</div>
+                    </div>
+                    <div style="position:absolute;top:-16px;left:-16px;background:#FCD34D;border-radius:12px;padding:10px 14px;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
+                        <div style="font-size:11px;font-weight:700;color:#92400E;">⭐ 4.9 / 5</div>
+                        <div style="font-size:10px;color:#B45309;">1,200+ reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Collection Tiles ──────────────────────────────────── -->
+<section class="container py-5" aria-labelledby="collections-heading">
+    <div class="text-center mb-4">
+        <span class="section-label">Explore</span>
+        <h2 class="section-title" id="collections-heading">Shop by Collection</h2>
+    </div>
+    <div class="collection-tiles-wrap">
+        <div class="collection-tiles justify-content-center">
+            <a href="{{ url_for('index', category='beauty') }}" class="collection-tile" aria-label="Beauty & Skincare collection">
+                <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=300&fit=crop" class="collection-tile-img" alt="Beauty & Skincare" loading="lazy">
+                <div class="collection-tile-overlay">
+                    <div class="collection-tile-label">Beauty & Skincare</div>
+                    <div class="collection-tile-sub">Glow up your routine</div>
+                </div>
+            </a>
+            <a href="{{ url_for('index', category='lifestyle') }}" class="collection-tile" aria-label="Lifestyle & Tech collection">
+                <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&h=300&fit=crop" class="collection-tile-img" alt="Lifestyle & Tech" loading="lazy">
+                <div class="collection-tile-overlay">
+                    <div class="collection-tile-label">Lifestyle & Tech</div>
+                    <div class="collection-tile-sub">Smart everyday essentials</div>
+                </div>
+            </a>
+            <a href="{{ url_for('index', category='wellness') }}" class="collection-tile" aria-label="Health & Wellness collection">
+                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop" class="collection-tile-img" alt="Health & Wellness" loading="lazy">
+                <div class="collection-tile-overlay">
+                    <div class="collection-tile-label">Health & Wellness</div>
+                    <div class="collection-tile-sub">Feel your best daily</div>
+                </div>
+            </a>
+            <a href="{{ url_for('index', category='spiritual') }}" class="collection-tile" aria-label="Pooja & Spiritual collection">
+                <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=400&h=300&fit=crop" class="collection-tile-img" alt="Pooja & Spiritual" loading="lazy">
+                <div class="collection-tile-overlay">
+                    <div class="collection-tile-label">Pooja & Spiritual</div>
+                    <div class="collection-tile-sub">Mindful living tools</div>
+                </div>
+            </a>
+            <a href="{{ url_for('index', category='pets') }}" class="collection-tile" aria-label="Pet Supplies collection">
+                <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&h=300&fit=crop" class="collection-tile-img" alt="Pet Supplies" loading="lazy">
+                <div class="collection-tile-overlay">
+                    <div class="collection-tile-label">Pet Supplies</div>
+                    <div class="collection-tile-sub">Love for your furry ones</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ── Search & Filter ───────────────────────────────────── -->
+<section class="container mb-4" id="products" aria-labelledby="products-heading">
+    <div class="search-filter-bar">
+        <form method="GET" action="{{ url_for('index') }}" role="search" aria-label="Product search and filter">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text" aria-hidden="true">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0"
+                               name="search"
+                               placeholder="Search skincare, gadgets, pooja items..."
+                               value="{{ search_query }}"
+                               aria-label="Search products"
+                               style="border-left:none;">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select name="category" class="form-select" aria-label="Filter by category">
+                        <option value="">All Collections</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat }}" {% if cat == category_filter %}selected{% endif %}>
+                                {{ cat.title() }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="sort" class="form-select" aria-label="Sort products">
+                        <option value="" {% if not sort_by %}selected{% endif %}>Featured</option>
+                        <option value="price_asc" {% if sort_by == 'price_asc' %}selected{% endif %}>Price: Low → High</option>
+                        <option value="price_desc" {% if sort_by == 'price_desc' %}selected{% endif %}>Price: High → Low</option>
+                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-1">
+                    <input type="number" class="form-control" name="min_price" placeholder="Min ₹"
+                           value="{{ min_price }}" min="0" aria-label="Minimum price">
+                </div>
+                <div class="col-6 col-md-1">
+                    <input type="number" class="form-control" name="max_price" placeholder="Max ₹"
+                           value="{{ max_price }}" min="0" aria-label="Maximum price">
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-primary w-100" aria-label="Apply filters">
+                        <i class="fas fa-filter" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            {% if search_query or category_filter or min_price or max_price or sort_by %}
+                <div class="mt-3 d-flex align-items-center gap-2 flex-wrap">
+                    <span style="font-size:13px;color:var(--slate);">Active filters:</span>
+                    {% if search_query %}
+                        <span class="filter-chip"><i class="fas fa-search" aria-hidden="true"></i>{{ search_query }}</span>
+                    {% endif %}
+                    {% if category_filter %}
+                        <span class="filter-chip"><i class="fas fa-tag" aria-hidden="true"></i>{{ category_filter.title() }}</span>
+                    {% endif %}
+                    {% if sort_by %}
+                        <span class="filter-chip"><i class="fas fa-sort" aria-hidden="true"></i>{{ sort_by.replace('_',' ').title() }}</span>
+                    {% endif %}
+                    <a href="{{ url_for('index') }}" class="btn btn-sm btn-outline-secondary" style="border-radius:20px;">
+                        <i class="fas fa-times me-1" aria-hidden="true"></i>Clear All
+                    </a>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</section>
+
+<!-- ── Products Grid ─────────────────────────────────────── -->
+<section class="container mb-5">
+    {% if not category_filter and not search_query %}
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+                <span class="section-label">Hand-picked for you</span>
+                <h2 class="section-title mb-0" id="products-heading">Trending Now</h2>
+            </div>
+            <a href="{{ url_for('index', sort='newest') }}" class="btn btn-outline-primary btn-sm d-none d-md-inline-flex" style="border-radius:20px;">
+                View All <i class="fas fa-arrow-right ms-1" aria-hidden="true"></i>
+            </a>
+        </div>
+    {% else %}
+        <div class="mb-4">
+            <h2 class="section-title" id="products-heading">
+                {% if category_filter %}{{ category_filter.title() }} Products{% elif search_query %}Results for "{{ search_query }}"{% else %}All Products{% endif %}
+            </h2>
+            <p class="text-slate" style="font-size:14px;">{{ products|length }} product{{ 's' if products|length != 1 else '' }} found</p>
+        </div>
+    {% endif %}
+
+    {% set badge_list = ['Trending', 'Best Seller', 'New Drop', "Editor's Pick", 'Popular'] %}
+    {% set badge_classes = ['badge-trending', 'badge-bestseller', 'badge-newdrop', 'badge-editor', 'badge-popular'] %}
+
+    {% if products %}
+        <div class="row g-4">
+            {% for product in products %}
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card product-card h-100 border-0">
+                        <!-- Image Wrapper -->
+                        <div class="product-card-img-wrap">
+                            {% if product.image_url %}
+                                <img src="{{ product.image_url }}"
+                                     class="card-img-top"
+                                     alt="{{ product.name }}"
+                                     loading="lazy"
+                                     onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400';">
+                            {% else %}
+                                <div class="card-img-top img-placeholder d-flex align-items-center justify-content-center" style="height:240px;">
+                                    <i class="fas fa-image fa-3x text-muted" aria-hidden="true"></i>
+                                </div>
+                            {% endif %}
+                            <!-- Product Badge -->
+                            <div class="product-card-badge">
+                                <span class="product-badge {{ badge_classes[loop.index0 % badge_classes|length] }}" aria-label="{{ badge_list[loop.index0 % badge_list|length] }} product">
+                                    {{ badge_list[loop.index0 % badge_list|length] }}
+                                </span>
+                            </div>
+                            <!-- Wishlist button -->
+                            {% if session.user_id %}
+                                <button class="product-card-wishlist wishlist-btn {% if is_in_wishlist(product.id) %}is-wishlisted{% endif %}"
+                                        data-product-id="{{ product.id }}"
+                                        aria-label="{{ 'Remove from wishlist' if is_in_wishlist(product.id) else 'Add to wishlist' }}"
+                                        type="button">
+                                    <i class="fas fa-heart" aria-hidden="true"></i>
+                                </button>
+                            {% endif %}
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column">
+                            <span class="category-badge category-{{ product.category.lower() }}">
+                                {{ product.category.title() }}
+                            </span>
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">
+                                {{ product.description[:90] }}{% if product.description|length > 90 %}...{% endif %}
+                            </p>
+                            <!-- Stars placeholder -->
+                            <div class="product-card-stars" aria-label="Rating">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                <i class="fas fa-star-half-alt" aria-hidden="true"></i>
+                                <span class="review-count">({{ (product.id * 7) % 120 + 12 }})</span>
+                            </div>
+                            <div class="product-card-footer mt-auto">
+                                <div class="product-card-price">
+                                    ₹{{ "%.0f"|format(product.price) }}
+                                </div>
+                                <a href="{{ url_for('product_detail', product_id=product.id) }}"
+                                   class="btn-add-cart"
+                                   aria-label="View {{ product.name }}">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5" style="padding:80px 24px;">
+            <div style="width:80px;height:80px;background:var(--primary-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;color:var(--primary);">
+                <i class="fas fa-search" aria-hidden="true"></i>
+            </div>
+            <h4 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--ink);margin-bottom:8px;">No results found</h4>
+            <p class="text-slate" style="font-size:14px;margin-bottom:24px;">Try adjusting your filters or search for something else.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left me-2" aria-hidden="true"></i>View All Products
+            </a>
+        </div>
+    {% endif %}
+</section>
+
+{% if not search_query and not category_filter %}
+
+<!-- ── Budget Picks (Under ₹999) ────────────────────────── -->
+<section class="container mb-5" aria-labelledby="budget-heading">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <span class="section-label">Great Value</span>
+            <h2 class="section-title mb-0" id="budget-heading">Premium Picks Under ₹999</h2>
+        </div>
+    </div>
+    <div class="row g-3">
+        {% for product in products[:4] %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <a href="{{ url_for('product_detail', product_id=product.id) }}" class="text-decoration-none" aria-label="{{ product.name }}">
+                    <div class="d-flex gap-3 align-items-center p-3" style="background:white;border:1px solid var(--border);border-radius:16px;transition:box-shadow 0.2s,transform 0.2s;" onmouseenter="this.style.boxShadow='0 8px 24px rgba(15,23,42,0.08)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.boxShadow='none';this.style.transform='none'">
+                        {% if product.image_url %}
+                            <img src="{{ product.image_url }}" alt="{{ product.name }}"
+                                 style="width:64px;height:64px;object-fit:cover;border-radius:12px;flex-shrink:0;" loading="lazy">
+                        {% else %}
+                            <div style="width:64px;height:64px;background:var(--soft-white);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-image text-muted" aria-hidden="true"></i>
+                            </div>
+                        {% endif %}
+                        <div style="min-width:0;">
+                            <div style="font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ product.name }}</div>
+                            <div style="margin-top:4px;display:flex;align-items:center;gap:6px;">
+                                <span style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:800;color:var(--primary);">₹{{ "%.0f"|format(product.price) }}</span>
+                                <span class="budget-tag">Under ₹999</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ── Trust / Feature Strip ────────────────────────────── -->
+<section class="container mb-5" aria-labelledby="features-heading">
+    <div class="trust-strip">
+        <div class="row g-0 text-center">
+            <div class="col-6 col-md-3" style="border-right:1px solid var(--border);">
+                <div class="trust-item">
+                    <div class="trust-item-icon" style="background:#EEF2FF;">
+                        <i class="fas fa-cubes" style="color:var(--primary);" aria-hidden="true"></i>
+                    </div>
+                    <h6>Curated Picks</h6>
+                    <p>Every product is hand-selected by our team for quality and value.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3" style="border-right:1px solid var(--border);">
+                <div class="trust-item">
+                    <div class="trust-item-icon" style="background:#F0FDF4;">
+                        <i class="fas fa-shipping-fast" style="color:var(--mint);" aria-hidden="true"></i>
+                    </div>
+                    <h6>Fast Delivery</h6>
+                    <p>Delivered in 2–5 business days. Free shipping above ₹999.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3" style="border-right:1px solid var(--border);border-top:1px solid var(--border);" id="features-heading">
+                <div class="trust-item">
+                    <div class="trust-item-icon" style="background:#FFF7ED;">
+                        <i class="fas fa-undo-alt" style="color:var(--coral);" aria-hidden="true"></i>
+                    </div>
+                    <h6>Easy Returns</h6>
+                    <p>7-day hassle-free returns on all orders, no questions asked.</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3" style="border-top:1px solid var(--border);">
+                <div class="trust-item">
+                    <div class="trust-item-icon" style="background:#FFFBEB;">
+                        <i class="fas fa-shield-alt" style="color:var(--gold);" aria-hidden="true"></i>
+                    </div>
+                    <h6>Secure Checkout</h6>
+                    <p>100% secure payments. UPI, cards, and net banking accepted.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Social Proof ──────────────────────────────────────── -->
+<section class="container mb-5" aria-labelledby="reviews-heading">
+    <div class="social-proof-banner">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-4">
+                <span style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);">What shoppers say</span>
+                <h2 id="reviews-heading" style="font-family:'Poppins',sans-serif;font-size:2rem;font-weight:800;color:white;margin:10px 0;">Loved by Modern India</h2>
+                <div style="font-size:2.4rem;font-weight:800;color:#FCD34D;line-height:1;">4.8 ★</div>
+                <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">Based on 1,200+ reviews</div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="testimonial-card">
+                            <div class="d-flex gap-1 mb-2" aria-label="5 star rating">
+                                {% for i in range(5) %}<i class="fas fa-star" style="color:#FCD34D;font-size:12px;" aria-hidden="true"></i>{% endfor %}
+                            </div>
+                            <p class="review-text">"The K-beauty serum is absolutely amazing. My skin glows now! Super fast delivery too."</p>
+                            <div class="reviewer-name">Priya M.</div>
+                            <div class="reviewer-location">Mumbai, Maharashtra</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="testimonial-card">
+                            <div class="d-flex gap-1 mb-2" aria-label="5 star rating">
+                                {% for i in range(5) %}<i class="fas fa-star" style="color:#FCD34D;font-size:12px;" aria-hidden="true"></i>{% endfor %}
+                            </div>
+                            <p class="review-text">"Ordered the meditation kit as a gift. The packaging was premium and it arrived in 3 days. Love it!"</p>
+                            <div class="reviewer-name">Rohit K.</div>
+                            <div class="reviewer-location">Bengaluru, Karnataka</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="testimonial-card">
+                            <div class="d-flex gap-1 mb-2" aria-label="4 star rating">
+                                {% for i in range(4) %}<i class="fas fa-star" style="color:#FCD34D;font-size:12px;" aria-hidden="true"></i>{% endfor %}
+                                <i class="fas fa-star" style="color:rgba(255,255,255,0.3);font-size:12px;" aria-hidden="true"></i>
+                            </div>
+                            <p class="review-text">"Great prices for premium-quality items. The wellness supplements work really well for me."</p>
+                            <div class="reviewer-name">Ananya S.</div>
+                            <div class="reviewer-location">Delhi, NCR</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Editorial Banner ──────────────────────────────────── -->
+<section class="container mb-5">
+    <div class="editorial-banner">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-7">
+                <span class="eyebrow">Self-care Edit</span>
+                <h2>Your Glow-Up Routine Starts Here</h2>
+                <p>From skin serums to yoga essentials — we've curated the perfect self-care toolkit for modern living. New arrivals every week.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('index', category='beauty') }}" class="btn btn-primary" style="border-radius:14px;">
+                        <i class="fas fa-spa me-2" aria-hidden="true"></i>Shop Beauty
+                    </a>
+                    <a href="{{ url_for('index', category='wellness') }}" class="btn btn-sm" style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);color:white;border-radius:14px;padding:10px 20px;font-weight:600;">
+                        <i class="fas fa-leaf me-2" aria-hidden="true"></i>Wellness Picks
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <img src="https://images.unsplash.com/photo-1607602132700-068258431302?w=380&h=260&fit=crop"
+                     alt="Beauty and wellness products editorial"
+                     style="border-radius:20px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);" loading="lazy">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (!href || href === '#' || href.length <= 1 || this.hasAttribute('data-bs-toggle')) return;
+        var target = document.querySelector(href);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+
+// Image fade-in
+document.querySelectorAll('.product-card img').forEach(function(img) {
+    img.style.opacity = '0';
+    img.style.transition = 'opacity 0.35s ease';
+    img.addEventListener('load', function() { this.style.opacity = '1'; });
+    if (img.complete) img.style.opacity = '1';
+});
+</script>
+{% endblock %}

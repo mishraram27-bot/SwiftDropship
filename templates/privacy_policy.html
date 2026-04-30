@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - TrendVibe Essentials{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card legal-document">
+                <div class="card-body p-5">
+                    <h1 class="display-6 mb-4 text-duke-blue">Privacy Policy</h1>
+                    <p class="text-muted mb-4">Last updated: April 16, 2026</p>
+
+                    <div class="legal-section">
+                        <h3>Information We Collect</h3>
+                        <p>We collect information you provide directly to us, such as when you create an account, make a purchase, or contact us. This includes:</p>
+                        <ul>
+                            <li>Personal information (name, email address, phone number)</li>
+                            <li>Account credentials (username, password)</li>
+                            <li>Payment information (processed securely through Stripe)</li>
+                            <li>Shopping preferences and order history</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>How We Use Your Information</h3>
+                        <p>We use the information we collect to:</p>
+                        <ul>
+                            <li>Process orders and payments</li>
+                            <li>Provide customer support</li>
+                            <li>Send order confirmations and updates</li>
+                            <li>Personalize your shopping experience</li>
+                            <li>Improve our products and services</li>
+                            <li>Comply with legal obligations</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Information Sharing</h3>
+                        <p>We do not sell, trade, or rent your personal information to third parties. We may share your information only in the following circumstances:</p>
+                        <ul>
+                            <li>With service providers who help us operate our business</li>
+                            <li>To comply with legal requirements</li>
+                            <li>To protect our rights and property</li>
+                            <li>With your explicit consent</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Data Security</h3>
+                        <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. This includes:</p>
+                        <ul>
+                            <li>SSL encryption for data transmission</li>
+                            <li>Secure password hashing</li>
+                            <li>Regular security audits</li>
+                            <li>Access controls and monitoring</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Your Rights</h3>
+                        <p>You have the right to:</p>
+                        <ul>
+                            <li>Access your personal information</li>
+                            <li>Correct inaccurate information</li>
+                            <li>Delete your account and data</li>
+                            <li>Opt-out of marketing communications</li>
+                            <li>Data portability</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Cookies</h3>
+                        <p>We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. You can control cookie settings through your browser preferences.</p>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Contact Us</h3>
+                        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+                        <p><strong>Email:</strong> privacy@trendvibe.com<br>
+                        <strong>Address:</strong> TrendVibe Essentials, Mumbai, India</p>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-top">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.legal-document {
+    box-shadow: var(--shadow-lg);
+    border: none;
+    border-radius: var(--border-radius-xl);
+}
+
+.legal-section {
+    margin-bottom: 2rem;
+}
+
+.legal-section h3 {
+    color: var(--duke-blue);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.legal-section ul {
+    padding-left: 1.5rem;
+}
+
+.legal-section li {
+    margin-bottom: 0.5rem;
+}
+</style>
+{% endblock %}

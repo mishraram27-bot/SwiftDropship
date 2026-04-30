@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - TrendVibe Essentials{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card legal-document">
+                <div class="card-body p-5">
+                    <h1 class="display-6 mb-4 text-duke-blue">Terms of Service</h1>
+                    <p class="text-muted mb-4">Last updated: April 16, 2026</p>
+
+                    <div class="legal-section">
+                        <h3>Acceptance of Terms</h3>
+                        <p>By accessing and using TrendVibe Essentials ("we," "our," or "us"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Description of Service</h3>
+                        <p>TrendVibe Essentials is an e-commerce platform offering curated beauty, lifestyle, wellness, and spiritual products for urban Indian consumers. We facilitate transactions between customers and suppliers.</p>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>User Accounts</h3>
+                        <p>To make purchases, you must create an account. You are responsible for:</p>
+                        <ul>
+                            <li>Providing accurate and complete information</li>
+                            <li>Maintaining the security of your account credentials</li>
+                            <li>All activities that occur under your account</li>
+                            <li>Notifying us immediately of any unauthorized use</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Orders and Payments</h3>
+                        <ul>
+                            <li>All orders are subject to availability and confirmation</li>
+                            <li>Prices are displayed in Indian Rupees (INR) and include applicable taxes</li>
+                            <li>Payment processing is handled securely through Stripe</li>
+                            <li>We reserve the right to cancel orders for any reason</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Shipping and Delivery</h3>
+                        <ul>
+                            <li>Delivery times are estimates and may vary</li>
+                            <li>Risk of loss transfers to you upon delivery</li>
+                            <li>You are responsible for providing accurate delivery information</li>
+                            <li>Additional charges may apply for remote locations</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Returns and Refunds</h3>
+                        <ul>
+                            <li>Returns must be requested within 7 days of delivery</li>
+                            <li>Items must be unused and in original packaging</li>
+                            <li>Refunds will be processed within 5-7 business days</li>
+                            <li>Return shipping costs are customer's responsibility</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Prohibited Uses</h3>
+                        <p>You may not use our service to:</p>
+                        <ul>
+                            <li>Violate any laws or regulations</li>
+                            <li>Infringe on intellectual property rights</li>
+                            <li>Transmit harmful or malicious content</li>
+                            <li>Interfere with our system security</li>
+                            <li>Resell products without authorization</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Limitation of Liability</h3>
+                        <p>Our liability is limited to the maximum extent permitted by law. We are not liable for indirect, incidental, or consequential damages arising from your use of our services.</p>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Governing Law</h3>
+                        <p>These terms are governed by the laws of India. Any disputes will be resolved in the courts of Mumbai, Maharashtra.</p>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Changes to Terms</h3>
+                        <p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting. Your continued use constitutes acceptance of modified terms.</p>
+                    </div>
+
+                    <div class="legal-section">
+                        <h3>Contact Information</h3>
+                        <p>For questions about these Terms of Service, contact us at:</p>
+                        <p><strong>Email:</strong> legal@trendvibe.com<br>
+                        <strong>Address:</strong> TrendVibe Essentials, Mumbai, India</p>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-top">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

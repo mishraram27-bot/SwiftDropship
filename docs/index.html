@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SwiftDropship</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f9fc;
+      color: #1b1f2a;
+      line-height: 1.5;
+    }
+    .wrap {
+      max-width: 880px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #dfe3eb;
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      color: #090c9b;
+      font-size: 30px;
+    }
+    p { margin: 8px 0; }
+    .muted { color: #596173; }
+    .links {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    a.button {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid #cfd5e3;
+      color: #1b1f2a;
+      background: #fff;
+      font-weight: 600;
+    }
+    a.button.primary {
+      background: #090c9b;
+      color: #fff;
+      border-color: #090c9b;
+    }
+    code {
+      background: #f2f4f8;
+      border: 1px solid #e3e7ef;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>SwiftDropship</h1>
+      <p class="muted">GitHub Pages deployment for the SwiftDropship project.</p>
+      <p>This project is built with Flask and SQLite, so dynamic features (login, cart, checkout, admin, database) require a Python server runtime and cannot run directly on GitHub Pages.</p>
+      <p>For full app hosting, deploy the backend app from this repository to a Python host (Render, Railway, Fly.io, or VPS).</p>
+      <div class="links">
+        <a class="button primary" href="https://github.com/mishraram27-bot/SwiftDropship" target="_blank" rel="noreferrer">Open Repository</a>
+        <a class="button" href="https://github.com/mishraram27-bot/SwiftDropship/actions" target="_blank" rel="noreferrer">View Deploy Workflow</a>
+      </div>
+      <p class="muted" style="margin-top: 16px;">Pages source: <code>/docs</code></p>
+    </div>
+  </div>
+</body>
+</html>

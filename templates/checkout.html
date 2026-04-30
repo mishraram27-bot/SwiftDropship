@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - TrendVibe Essentials{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="Secure checkout for TrendVibe Essentials. Fast delivery across India.">
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Skip link for accessibility -->
+    <a href="#checkout-form" class="visually-hidden-focusable">Skip to checkout form</a>
+    
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-credit-card me-2" aria-hidden="true"></i>Checkout
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <form id="checkout-form" method="POST" action="{{ url_for('process_order') }}" novalidate aria-label="Checkout form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <!-- Shipping Information -->
+                <div class="card mb-4">
+                    <div class="card-header bg-duke-blue text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-shipping-fast me-2" aria-hidden="true"></i>Shipping Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="address" class="form-label">Full Address <span class="text-danger" aria-label="required">*</span></label>
+                                <textarea class="form-control" 
+                                          id="address" 
+                                          name="address" 
+                                          rows="3" 
+                                          required 
+                                          aria-required="true"
+                                          placeholder="House/Flat No., Street, Area, Landmark"></textarea>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="city" class="form-label">City <span class="text-danger" aria-label="required">*</span></label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="city" 
+                                       name="city" 
+                                       required 
+                                       aria-required="true"
+                                       placeholder="e.g. Mumbai, Delhi, Bengaluru">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="state" class="form-label">State <span class="text-danger" aria-label="required">*</span></label>
+                                <select class="form-select" id="state" name="state" required aria-required="true">
+                                    <option value="">Select State</option>
+                                    <option>Andhra Pradesh</option>
+                                    <option>Arunachal Pradesh</option>
+                                    <option>Assam</option>
+                                    <option>Bihar</option>
+                                    <option>Chhattisgarh</option>
+                                    <option>Goa</option>
+                                    <option>Gujarat</option>
+                                    <option>Haryana</option>
+                                    <option>Himachal Pradesh</option>
+                                    <option>Jharkhand</option>
+                                    <option>Karnataka</option>
+                                    <option>Kerala</option>
+                                    <option>Madhya Pradesh</option>
+                                    <option>Maharashtra</option>
+                                    <option>Manipur</option>
+                                    <option>Meghalaya</option>
+                                    <option>Mizoram</option>
+                                    <option>Nagaland</option>
+                                    <option>Odisha</option>
+                                    <option>Punjab</option>
+                                    <option>Rajasthan</option>
+                                    <option>Sikkim</option>
+                                    <option>Tamil Nadu</option>
+                                    <option>Telangana</option>
+                                    <option>Tripura</option>
+                                    <option>Uttar Pradesh</option>
+                                    <option>Uttarakhand</option>
+                                    <option>West Bengal</option>
+                                    <option>Delhi</option>
+                                    <option>Jammu & Kashmir</option>
+                                    <option>Ladakh</option>
+                                    <option>Puducherry</option>
+                                    <option>Chandigarh</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="postal_code" class="form-label">PIN Code <span class="text-danger" aria-label="required">*</span></label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="postal_code" 
+                                       name="postal_code" 
+                                       required 
+                                       aria-required="true"
+                                       maxlength="6"
+                                       pattern="[0-9]{6}"
+                                       placeholder="6-digit PIN code">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Mobile Number <span class="text-danger" aria-label="required">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+91</span>
+                                    <input type="tel" 
+                                           class="form-control" 
+                                           id="phone" 
+                                           name="phone" 
+                                           required 
+                                           aria-required="true"
+                                           maxlength="10"
+                                           pattern="[6-9][0-9]{9}"
+                                           placeholder="10-digit mobile number">
+                                </div>
+                                <div class="form-text">Enter 10-digit mobile number (starts with 6, 7, 8, or 9)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Information -->
+                <div class="card mb-4">
+                    <div class="card-header bg-duke-blue text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-credit-card me-2" aria-hidden="true"></i>Payment
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info mb-3">
+                            <i class="fas fa-info-circle me-2" aria-hidden="true"></i>
+                            <strong>Demo Mode:</strong> This is a demonstration checkout. No actual payment will be processed.
+                        </div>
+                        
+                        <div class="row g-2 mb-3">
+                            <div class="col-12">
+                                <p class="text-muted mb-2"><strong>Accepted Payment Methods:</strong></p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <span class="badge bg-light text-dark border px-3 py-2"><i class="fas fa-university me-1"></i>UPI / GPay / PhonePe</span>
+                                    <span class="badge bg-light text-dark border px-3 py-2"><i class="fas fa-credit-card me-1"></i>Credit / Debit Card</span>
+                                    <span class="badge bg-light text-dark border px-3 py-2"><i class="fas fa-landmark me-1"></i>Net Banking</span>
+                                    <span class="badge bg-light text-dark border px-3 py-2"><i class="fas fa-wallet me-1"></i>Paytm / Wallets</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="card_number" class="form-label">Card Number (Demo)</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="card_number" 
+                                       placeholder="4111 1111 1111 1111" 
+                                       value="4111 1111 1111 1111" 
+                                       readonly
+                                       aria-label="Demo card number, pre-filled">
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="expiry" class="form-label">Expiry</label>
+                                <input type="text" class="form-control" id="expiry" value="12/28" readonly aria-label="Demo expiry date">
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" class="form-control" id="cvv" value="123" readonly aria-label="Demo CVV">
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="cardholder" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="cardholder" value="Demo User" readonly aria-label="Demo cardholder name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg px-5" id="place-order-btn">
+                        <i class="fas fa-check-circle me-2" aria-hidden="true"></i>Place Order
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="checkout-summary" role="complementary" aria-label="Order summary">
+                <h4 class="mb-3">Order Summary</h4>
+                
+                {% for item in items %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="flex-grow-1">
+                            <small class="d-block fw-bold">{{ item.product.name }}</small>
+                            <small class="text-muted">Qty: {{ item.quantity }} × ₹{{ "%.0f"|format(item.product.price) }}</small>
+                        </div>
+                        <div class="text-end">
+                            <small class="fw-bold">₹{{ "%.0f"|format(item.total) }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotal:</span>
+                    <span>₹{{ "%.0f"|format(total) }}</span>
+                </div>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Shipping:</span>
+                    <span class="text-success">
+                        {% if total >= 1000 %}
+                            <i class="fas fa-check-circle text-success me-1" aria-hidden="true"></i>Free
+                        {% else %}
+                            ₹50
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="d-flex justify-content-between mb-2">
+                    <span>GST (18%):</span>
+                    <span>₹{{ "%.0f"|format(total * 0.18) }}</span>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between mb-3">
+                    <strong>Total:</strong>
+                    <strong class="text-duke-blue h5">
+                        ₹{{ "%.0f"|format(total + (50 if total < 1000 else 0) + (total * 0.18)) }}
+                    </strong>
+                </div>
+                
+                <div class="small text-muted">
+                    <i class="fas fa-shield-alt me-1" aria-hidden="true"></i>
+                    100% secure and encrypted payment.
+                </div>
+                
+                <div class="mt-2 small text-muted">
+                    <i class="fas fa-truck me-1" aria-hidden="true"></i>
+                    Estimated delivery: 3–7 business days across India.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    const phone = document.getElementById('phone').value.replace(/\D/g, '');
+    const pin = document.getElementById('postal_code').value;
+    
+    if (phone.length !== 10 || !/^[6-9]/.test(phone)) {
+        e.preventDefault();
+        alert('Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.');
+        return;
+    }
+    if (pin.length !== 6) {
+        e.preventDefault();
+        alert('Please enter a valid 6-digit PIN code.');
+        return;
+    }
+    
+    const btn = document.getElementById('place-order-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Placing Order...';
+    btn.disabled = true;
+});
+
+document.getElementById('phone').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').substring(0, 10);
+});
+
+document.getElementById('postal_code').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').substring(0, 6);
+});
+</script>
+{% endblock %}

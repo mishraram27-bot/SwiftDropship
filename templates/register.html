@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account — TrendVibe Essentials{% endblock %}
+
+{% block content %}
+<div class="auth-page-wrap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <div class="auth-card">
+                    <div class="brand-icon-wrap">
+                        <i class="fas fa-user-plus" aria-hidden="true"></i>
+                    </div>
+                    <h2>Join TrendVibe</h2>
+                    <p class="auth-subtitle">Create your free account and start discovering curated essentials</p>
+
+                    <form method="POST" autocomplete="on" novalidate>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background:var(--soft-white);border:1.5px solid var(--border);border-right:none;">
+                                    <i class="fas fa-user" style="color:var(--muted);" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       required autocomplete="username"
+                                       placeholder="Choose a username"
+                                       aria-label="Username"
+                                       style="border-left:none;">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background:var(--soft-white);border:1.5px solid var(--border);border-right:none;">
+                                    <i class="fas fa-envelope" style="color:var(--muted);" aria-hidden="true"></i>
+                                </span>
+                                <input type="email" class="form-control" id="email" name="email"
+                                       required autocomplete="email"
+                                       placeholder="your@email.com"
+                                       aria-label="Email address"
+                                       style="border-left:none;">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background:var(--soft-white);border:1.5px solid var(--border);border-right:none;">
+                                    <i class="fas fa-lock" style="color:var(--muted);" aria-hidden="true"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       required autocomplete="new-password"
+                                       placeholder="Create a strong password"
+                                       minlength="8"
+                                       aria-label="Password"
+                                       style="border-left:none;border-right:none;">
+                                <button type="button" id="toggle-pw"
+                                        class="input-group-text"
+                                        style="background:var(--soft-white);border:1.5px solid var(--border);border-left:none;cursor:pointer;"
+                                        aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye" style="color:var(--muted);" aria-hidden="true"></i>
+                                </button>
+                            </div>
+
+                            <!-- Strength bar -->
+                            <div class="password-strength-bar mt-2" role="presentation">
+                                <div id="password-progress" class="password-strength-fill" style="width:0%;background:var(--border);"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <small style="font-size:11px;color:var(--muted);">Password strength</small>
+                                <small id="password-strength" style="font-size:11px;font-weight:700;color:var(--muted);">Too short</small>
+                            </div>
+
+                            <!-- Requirements -->
+                            <div id="password-requirements" class="mt-2" style="font-size:12px;" aria-live="polite">
+                                <div class="requirement d-flex align-items-center gap-1 mb-1" id="req-length">
+                                    <i class="fas fa-times-circle" style="color:var(--coral);" aria-hidden="true"></i>At least 8 characters
+                                </div>
+                                <div class="requirement d-flex align-items-center gap-1 mb-1" id="req-upper">
+                                    <i class="fas fa-times-circle" style="color:var(--coral);" aria-hidden="true"></i>One uppercase letter
+                                </div>
+                                <div class="requirement d-flex align-items-center gap-1 mb-1" id="req-lower">
+                                    <i class="fas fa-times-circle" style="color:var(--coral);" aria-hidden="true"></i>One lowercase letter
+                                </div>
+                                <div class="requirement d-flex align-items-center gap-1 mb-1" id="req-number">
+                                    <i class="fas fa-times-circle" style="color:var(--coral);" aria-hidden="true"></i>One number
+                                </div>
+                                <div class="requirement d-flex align-items-center gap-1" id="req-special">
+                                    <i class="fas fa-times-circle" style="color:var(--coral);" aria-hidden="true"></i>One special character (!@#$...)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">
+                            By creating an account, you agree to our
+                            <a href="{{ url_for('privacy_policy') }}" style="color:var(--primary);">Privacy Policy</a>
+                            and <a href="{{ url_for('terms_of_service') }}" style="color:var(--primary);">Terms of Service</a>.
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3" style="border-radius:14px;padding:13px;">
+                            <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Create Free Account
+                        </button>
+                    </form>
+
+                    <div class="text-center" style="border-top:1px solid var(--border);padding-top:20px;">
+                        <p style="font-size:14px;color:var(--slate);margin-bottom:10px;">Already have an account?</p>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary w-100" style="border-radius:14px;padding:11px;">
+                            <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Password visibility toggle
+document.getElementById('toggle-pw').addEventListener('click', function() {
+    var pw = document.getElementById('password');
+    var icon = this.querySelector('i');
+    if (pw.type === 'password') {
+        pw.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        pw.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+});
+
+// Password strength checker
+document.getElementById('password').addEventListener('input', function() {
+    var val = this.value;
+    var checks = {
+        length:  val.length >= 8,
+        upper:   /[A-Z]/.test(val),
+        lower:   /[a-z]/.test(val),
+        number:  /[0-9]/.test(val),
+        special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)
+    };
+
+    function setReq(id, ok) {
+        var el = document.getElementById(id);
+        var icon = el.querySelector('i');
+        if (ok) {
+            icon.className = 'fas fa-check-circle';
+            icon.style.color = 'var(--mint)';
+            el.style.color = 'var(--slate)';
+        } else {
+            icon.className = 'fas fa-times-circle';
+            icon.style.color = 'var(--coral)';
+            el.style.color = 'var(--slate)';
+        }
+    }
+
+    setReq('req-length', checks.length);
+    setReq('req-upper', checks.upper);
+    setReq('req-lower', checks.lower);
+    setReq('req-number', checks.number);
+    setReq('req-special', checks.special);
+
+    var score = Object.values(checks).filter(Boolean).length;
+    var bar = document.getElementById('password-progress');
+    var label = document.getElementById('password-strength');
+    var colors = ['var(--border)', 'var(--coral)', '#F97316', 'var(--gold)', 'var(--mint)', 'var(--mint)'];
+    var labels = ['Too short', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+    bar.style.width = (score * 20) + '%';
+    bar.style.background = colors[score];
+    label.textContent = labels[score];
+    label.style.color = colors[score];
+});
+</script>
+{% endblock %}

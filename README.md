@@ -19,3 +19,4 @@ The app starts on `http://localhost:5000`.
 Use `gunicorn wsgi:app` for production hosts such as Render, Railway, Fly.io, or a VPS.
 
 Set `APP_BASE_URL` to the public site URL so email links and checkout redirects stay correct.
+Set `SESSION_COOKIE_SECURE=true` behind HTTPS, and only set `ADMIN_BOOTSTRAP_USERNAME`, `ADMIN_BOOTSTRAP_EMAIL`, and `ADMIN_BOOTSTRAP_PASSWORD` when you intentionally want the seed admin account created on first boot.

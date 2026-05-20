@@ -29,9 +29,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dropship.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Security configurations
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SESSION_COOKIE_SECURE', 'false').lower() in ('1', 'true', 'yes')
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['PREFERRED_URL_SCHEME'] = 'https' if app.config['SESSION_COOKIE_SECURE'] else 'http'
 
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
@@ -796,7 +797,6 @@ def verify_email(token):
     return redirect(url_for('login'))
 
 @app.route('/subscribe', methods=['POST'])
-@csrf.exempt
 def subscribe_newsletter():
     data = request.get_json(silent=True) or {}
     email = sanitize_input((data.get('email') or '').strip())
@@ -1016,16 +1016,21 @@ def api_recommendations(product_id):
 
 def create_sample_data():
     """Create sample products and admin user"""
-    # Create admin user
-    admin = User.query.filter_by(username='admin').first()
-    if not admin:
-        admin = User()
-        admin.username = 'admin'
-        admin.email = 'admin@trendvibe.com'
-        admin.is_admin = True
-        admin.is_email_verified = True
-        admin.set_password('Admin@123!')  # Meets security requirements
-        db.session.add(admin)
+    # Create a bootstrap admin only when credentials are provided explicitly.
+    bootstrap_username = os.environ.get('ADMIN_BOOTSTRAP_USERNAME', '').strip()
+    bootstrap_email = os.environ.get('ADMIN_BOOTSTRAP_EMAIL', '').strip()
+    bootstrap_password = os.environ.get('ADMIN_BOOTSTRAP_PASSWORD', '')
+
+    if bootstrap_username and bootstrap_email and bootstrap_password:
+        admin = User.query.filter_by(username=bootstrap_username).first()
+        if not admin:
+            admin = User()
+            admin.username = bootstrap_username
+            admin.email = bootstrap_email
+            admin.is_admin = True
+            admin.is_email_verified = True
+            admin.set_password(bootstrap_password)
+            db.session.add(admin)
     
     # Sample products data - TrendVibe Essentials 5-category model
     sample_products = [
@@ -1247,4 +1252,5 @@ if __name__ == '__main__':
         recommender.train()
     
     # Run on all interfaces and port 5000 for local development and generic hosts
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'false').lower() in ('1', 'true', 'yes')
+    app.run(host='0.0.0.0', port=5000, debug=debug_mode)

@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Add Product - Admin - TrendVibe Essentials{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h2>
+                    <i class="fas fa-plus-circle me-2"></i>Add New Product
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-duke-blue text-white">
+                    <h5 class="mb-0">Product Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Product Name *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="name" 
+                                       name="name" 
+                                       required 
+                                       placeholder="Enter product name">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="category" class="form-label">Category *</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="">Select category</option>
+                                    <option value="beauty">Beauty & Skincare</option>
+                                    <option value="lifestyle">Lifestyle & Tech</option>
+                                    <option value="spiritual">Pooja & Spiritual</option>
+                                    <option value="wellness">Health & Wellness</option>
+                                    <option value="pets">Pet Supplies</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label for="description" class="form-label">Description *</label>
+                                <textarea class="form-control" 
+                                          id="description" 
+                                          name="description" 
+                                          rows="4" 
+                                          required 
+                                          placeholder="Describe the product features and benefits"></textarea>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="price" class="form-label">Price (₹) *</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       id="price" 
+                                       name="price" 
+                                       step="0.01" 
+                                       min="0" 
+                                       required 
+                                       placeholder="0.00">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="stock" class="form-label">Stock Quantity</label>
+                                <input type="number" 
+                                       class="form-control" 
+                                       id="stock" 
+                                       name="stock" 
+                                       min="0" 
+                                       value="999" 
+                                       placeholder="999">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="supplier" class="form-label">Supplier *</label>
+                                <input type="text" 
+                                       class="form-control" 
+                                       id="supplier" 
+                                       name="supplier" 
+                                       required 
+                                       placeholder="Supplier name">
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label for="image_url" class="form-label">Image URL</label>
+                                <input type="url" 
+                                       class="form-control" 
+                                       id="image_url" 
+                                       name="image_url" 
+                                       placeholder="https://example.com/image.jpg">
+                                <small class="text-muted">Use a direct link to an image (Unsplash, etc.)</small>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-save me-2"></i>Add Product
+                            </button>
+                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-lg px-5 ms-3">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Form validation and enhancements
+document.getElementById('price').addEventListener('input', function(e) {
+    let value = parseFloat(e.target.value);
+    if (value < 0) {
+        e.target.value = 0;
+    }
+});
+
+document.getElementById('stock').addEventListener('input', function(e) {
+    let value = parseInt(e.target.value);
+    if (value < 0) {
+        e.target.value = 0;
+    }
+});
+
+// Image URL preview
+document.getElementById('image_url').addEventListener('change', function(e) {
+    const url = e.target.value;
+    const preview = document.getElementById('image-preview');
+    
+    if (preview) {
+        preview.remove();
+    }
+    
+    if (url) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.id = 'image-preview';
+        img.className = 'img-fluid rounded mt-2';
+        img.style.maxHeight = '200px';
+        img.style.objectFit = 'cover';
+        
+        img.onerror = function() {
+            this.remove();
+        };
+        
+        e.target.parentElement.appendChild(img);
+    }
+});
+
+// Category-based suggestions
+const categoryDescriptions = {
+    'beauty': 'Premium beauty and skincare product for glowing, healthy skin.',
+    'lifestyle': 'Trending lifestyle or tech product for modern urban living.',
+    'spiritual': 'Sacred pooja or spiritual item to support your practice and inner growth.',
+    'wellness': 'Health and wellness product to support your fitness and wellbeing journey.',
+    'pets': 'Quality pet supply to keep your furry friends happy and healthy.'
+};
+
+document.getElementById('category').addEventListener('change', function(e) {
+    const category = e.target.value;
+    const description = document.getElementById('description');
+    
+    if (category && categoryDescriptions[category] && !description.value) {
+        description.placeholder = categoryDescriptions[category];
+    }
+});
+</script>
+{% endblock %}

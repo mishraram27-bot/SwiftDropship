@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Login — TrendVibe Essentials{% endblock %}
+
+{% block content %}
+<div class="auth-page-wrap">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="brand-icon-wrap">
+                        <i class="fas fa-fire" aria-hidden="true"></i>
+                    </div>
+                    <h2>Welcome Back</h2>
+                    <p class="auth-subtitle">Sign in to continue your cart and wishlist</p>
+
+                    <form method="POST" autocomplete="on">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background:var(--soft-white);border:1.5px solid var(--border);border-right:none;">
+                                    <i class="fas fa-user" style="color:var(--muted);" aria-hidden="true"></i>
+                                </span>
+                                <input type="text" class="form-control" id="username" name="username"
+                                       required autocomplete="username"
+                                       placeholder="Your username"
+                                       aria-label="Username"
+                                       style="border-left:none;">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text" style="background:var(--soft-white);border:1.5px solid var(--border);border-right:none;">
+                                    <i class="fas fa-lock" style="color:var(--muted);" aria-hidden="true"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password"
+                                       required autocomplete="current-password"
+                                       placeholder="Your password"
+                                       aria-label="Password"
+                                       style="border-left:none;border-right:none;">
+                                <button type="button" class="input-group-text" id="toggle-pw"
+                                        style="background:var(--soft-white);border:1.5px solid var(--border);border-left:none;cursor:pointer;"
+                                        aria-label="Toggle password visibility">
+                                    <i class="fas fa-eye" style="color:var(--muted);" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3" style="border-radius:14px;padding:13px;">
+                            <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>Sign In
+                        </button>
+                    </form>
+
+                    <div class="text-center" style="border-top:1px solid var(--border);padding-top:20px;margin-top:4px;">
+                        <p style="font-size:14px;color:var(--slate);margin-bottom:10px;">Don't have an account?</p>
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-primary w-100" style="border-radius:14px;padding:11px;">
+                            <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Create Free Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('toggle-pw').addEventListener('click', function() {
+    var pwField = document.getElementById('password');
+    var icon = this.querySelector('i');
+    if (pwField.type === 'password') {
+        pwField.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+        this.setAttribute('aria-label', 'Hide password');
+    } else {
+        pwField.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+        this.setAttribute('aria-label', 'Show password');
+    }
+});
+</script>
+{% endblock %}

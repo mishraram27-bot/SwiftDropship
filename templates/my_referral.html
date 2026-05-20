@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Refer & Earn — TrendVibe Essentials{% endblock %}
+{% block meta_description %}Share your TrendVibe referral link with friends and earn rewards. Every friend who joins gets a discount too!{% endblock %}
+
+{% block content %}
+<div style="min-height:70vh;background:linear-gradient(135deg,#EEF2FF 0%,#F8FAFC 100%);padding:48px 0 64px;">
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-8 col-xl-7">
+
+    <!-- Header -->
+    <div class="text-center mb-5">
+        <div style="width:72px;height:72px;background:var(--primary);border-radius:20px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:0 8px 24px rgba(79,70,229,0.35);">
+            <i class="fas fa-gift" style="font-size:28px;color:#fff;" aria-hidden="true"></i>
+        </div>
+        <h1 style="font-family:'Poppins',sans-serif;font-weight:800;font-size:2rem;color:var(--ink);margin-bottom:10px;">Refer & Earn</h1>
+        <p style="font-size:15px;color:var(--slate);max-width:460px;margin:0 auto;line-height:1.7;">
+            Share TrendVibe with your friends. They get <strong>10% off</strong> their first order — and you get the good karma of helping someone discover great essentials.
+        </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="row g-3 mb-5">
+        <div class="col-md-4">
+            <div style="background:#fff;border-radius:16px;padding:22px;text-align:center;border:1px solid rgba(79,70,229,0.1);height:100%;">
+                <div style="width:44px;height:44px;background:#EEF2FF;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
+                    <i class="fas fa-share-alt" style="color:var(--primary);font-size:18px;" aria-hidden="true"></i>
+                </div>
+                <div style="font-weight:700;color:var(--ink);margin-bottom:6px;">1. Share Your Link</div>
+                <div style="font-size:13px;color:var(--slate);line-height:1.6;">Send your unique referral link to friends via WhatsApp, Instagram, or email.</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="background:#fff;border-radius:16px;padding:22px;text-align:center;border:1px solid rgba(79,70,229,0.1);height:100%;">
+                <div style="width:44px;height:44px;background:#F0FDF4;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
+                    <i class="fas fa-user-plus" style="color:#16A34A;font-size:18px;" aria-hidden="true"></i>
+                </div>
+                <div style="font-weight:700;color:var(--ink);margin-bottom:6px;">2. Friend Signs Up</div>
+                <div style="font-size:13px;color:var(--slate);line-height:1.6;">Your friend registers and uses code <strong>WELCOME10</strong> at checkout for 10% off.</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div style="background:#fff;border-radius:16px;padding:22px;text-align:center;border:1px solid rgba(79,70,229,0.1);height:100%;">
+                <div style="width:44px;height:44px;background:#FFFBEB;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
+                    <i class="fas fa-star" style="color:#D97706;font-size:18px;" aria-hidden="true"></i>
+                </div>
+                <div style="font-weight:700;color:var(--ink);margin-bottom:6px;">3. Both Win!</div>
+                <div style="font-size:13px;color:var(--slate);line-height:1.6;">Your friend saves money and you grow your circle of great taste. Everyone loves it.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Your Code Card -->
+    <div style="background:#fff;border-radius:20px;padding:32px;border:2px solid var(--primary);box-shadow:0 8px 32px rgba(79,70,229,0.12);margin-bottom:24px;">
+        <div class="row align-items-center gy-3">
+            <div class="col-md-6">
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px;">Your Referral Code</div>
+                <div style="font-family:'Poppins',sans-serif;font-size:2.2rem;font-weight:800;color:var(--primary);letter-spacing:.15em;">{{ user.referral_code }}</div>
+                <div style="font-size:13px;color:var(--slate);margin-top:6px;">
+                    <i class="fas fa-users me-1" style="color:var(--mint);" aria-hidden="true"></i>
+                    <strong>{{ referred_count }}</strong> friend{{ 's' if referred_count != 1 else '' }} joined via your referral
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--slate);margin-bottom:8px;">Your Referral Link</div>
+                <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;word-break:break-all;">
+                    <span style="font-size:12px;color:var(--ink);flex-grow:1;" id="referralUrl">{{ referral_url }}</span>
+                    <button id="copyBtn" onclick="copyReferralLink()" style="flex-shrink:0;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;" aria-label="Copy referral link">
+                        <i class="fas fa-copy me-1" aria-hidden="true"></i>Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Buttons -->
+    <div style="background:#fff;border-radius:16px;padding:24px;border:1px solid rgba(79,70,229,0.1);margin-bottom:24px;">
+        <div style="font-size:13px;font-weight:700;color:var(--slate);margin-bottom:14px;text-transform:uppercase;letter-spacing:.06em;">Share via</div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="https://wa.me/?text={{ 'Hey! I found TrendVibe — amazing curated products. Use my link to get 10% off your first order: ' + referral_url | urlencode }}"
+               target="_blank" rel="noopener"
+               class="btn btn-sm" style="background:#25D366;color:#fff;border-radius:20px;font-weight:600;">
+                <i class="fab fa-whatsapp me-1" aria-hidden="true"></i>WhatsApp
+            </a>
+            <a href="https://twitter.com/intent/tweet?text={{ ('Loving @TrendVibeIN! Get 10% off your first order: ' + referral_url) | urlencode }}"
+               target="_blank" rel="noopener"
+               class="btn btn-sm" style="background:#1DA1F2;color:#fff;border-radius:20px;font-weight:600;">
+                <i class="fab fa-twitter me-1" aria-hidden="true"></i>Twitter
+            </a>
+            <a href="mailto:?subject=You'll love TrendVibe Essentials&body={{ ('Hey! Check out TrendVibe — amazing curated beauty, lifestyle and wellness products. Use my link for 10% off your first order: ' + referral_url) | urlencode }}"
+               class="btn btn-sm" style="background:#475569;color:#fff;border-radius:20px;font-weight:600;">
+                <i class="fas fa-envelope me-1" aria-hidden="true"></i>Email
+            </a>
+            <button onclick="copyReferralLink()" class="btn btn-sm btn-outline-primary" style="border-radius:20px;font-weight:600;">
+                <i class="fas fa-link me-1" aria-hidden="true"></i>Copy Link
+            </button>
+        </div>
+    </div>
+
+    <!-- Coupon reminder -->
+    <div style="background:linear-gradient(135deg,var(--primary) 0%,#6366F1 100%);border-radius:16px;padding:20px 24px;color:#fff;display:flex;align-items:center;gap:16px;">
+        <div style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-tag" style="font-size:20px;" aria-hidden="true"></i>
+        </div>
+        <div>
+            <div style="font-weight:700;margin-bottom:4px;">Remind your friends</div>
+            <div style="font-size:13px;opacity:.85;line-height:1.6;">Tell them to use coupon code <strong>WELCOME10</strong> at checkout to get their 10% welcome discount!</div>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-sm ms-auto" style="background:rgba(255,255,255,0.2);color:#fff;border:1.5px solid rgba(255,255,255,0.3);border-radius:20px;white-space:nowrap;flex-shrink:0;">
+            Shop Now
+        </a>
+    </div>
+
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function copyReferralLink() {
+    var url = document.getElementById('referralUrl').textContent.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() {
+            showCopied();
+        }).catch(function() { fallbackCopy(url); });
+    } else { fallbackCopy(url); }
+}
+function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); showCopied(); } catch(e) {}
+    document.body.removeChild(ta);
+}
+function showCopied() {
+    var btn = document.getElementById('copyBtn');
+    if (btn) {
+        btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+        btn.style.background = '#16A34A';
+        setTimeout(function() {
+            btn.innerHTML = '<i class="fas fa-copy me-1"></i>Copy';
+            btn.style.background = 'var(--primary)';
+        }, 2200);
+    }
+}
+</script>
+{% endblock %}

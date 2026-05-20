@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="100%" stop-color="#FEF3C7"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)"/>
+  <!-- Decorative mandala background -->
+  <circle cx="200" cy="190" r="160" fill="none" stroke="#F59E0B" stroke-width="1" opacity="0.3"/>
+  <circle cx="200" cy="190" r="140" fill="none" stroke="#F59E0B" stroke-width="1" opacity="0.2"/>
+  <!-- Ganesha silhouette - Head -->
+  <ellipse cx="200" cy="150" rx="60" ry="70" fill="url(#gold)"/>
+  <!-- Ears -->
+  <ellipse cx="148" cy="155" rx="28" ry="40" fill="#F59E0B"/>
+  <ellipse cx="252" cy="155" rx="28" ry="40" fill="#F59E0B"/>
+  <!-- Trunk -->
+  <path d="M200,185 Q175,220 185,255 Q195,280 220,270" fill="none" stroke="#D97706" stroke-width="14" stroke-linecap="round"/>
+  <!-- Body -->
+  <ellipse cx="200" cy="280" rx="70" ry="75" fill="url(#gold)" opacity="0.9"/>
+  <!-- Crown -->
+  <polygon points="200,85 188,110 175,95 183,120 170,115 185,135 200,128 215,135 230,115 217,120 225,95 212,110" fill="#F59E0B"/>
+  <!-- Eyes -->
+  <circle cx="182" cy="145" r="8" fill="#1E1B4B"/>
+  <circle cx="218" cy="145" r="8" fill="#1E1B4B"/>
+  <circle cx="184" cy="143" r="3" fill="white"/>
+  <circle cx="220" cy="143" r="3" fill="white"/>
+  <!-- Om symbol on belly -->
+  <text x="200" y="290" text-anchor="middle" font-size="22" fill="#92400E" font-family="serif" opacity="0.7">ॐ</text>
+  <!-- Lotus base -->
+  <ellipse cx="200" cy="365" rx="80" ry="15" fill="#F59E0B" opacity="0.4"/>
+  <path d="M140,360 Q200,335 260,360" fill="#FDE68A"/>
+  <text x="200" y="393" text-anchor="middle" font-size="12" fill="#92400E" font-family="sans-serif">Sacred Handcrafted Idol</text>
+</svg>

@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - TrendVibe Essentials{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+.admin-stat-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 22px;
+    border: 1px solid rgba(79,70,229,0.1);
+    box-shadow: 0 2px 12px rgba(79,70,229,0.06);
+    height: 100%;
+    transition: box-shadow .2s;
+}
+.admin-stat-card:hover { box-shadow: 0 6px 24px rgba(79,70,229,0.13); }
+.admin-stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+}
+.admin-stat-label { font-size: 12px; color: var(--slate); font-weight: 600; text-transform: uppercase; letter-spacing:.05em; margin-bottom: 4px; }
+.admin-stat-value { font-family:'Poppins',sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--ink); line-height: 1; }
+.admin-stat-sub { font-size: 11px; color: var(--mint); font-weight: 600; margin-top: 4px; }
+.admin-chart-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(79,70,229,0.08);
+    box-shadow: 0 2px 12px rgba(79,70,229,0.05);
+    padding: 22px;
+}
+.admin-section-title { font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; color:var(--ink); margin-bottom:16px; }
+.low-stock-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+.low-stock-row:last-child { border-bottom:none; }
+.low-stock-badge { font-size:11px; font-weight:700; border-radius:20px; padding:3px 10px; }
+.stock-critical { background:#FEE2E2; color:#DC2626; }
+.stock-low { background:#FEF3C7; color:#D97706; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 style="font-family:'Poppins',sans-serif;font-weight:800;color:var(--ink);margin-bottom:2px;">
+                <i class="fas fa-tachometer-alt me-2" style="color:var(--primary);"></i>Admin Dashboard
+            </h2>
+            <p style="font-size:13px;color:var(--slate);margin:0;">Overview of your store's performance</p>
+        </div>
+        <a href="{{ url_for('add_product') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Add Product
+        </a>
+    </div>
+
+    <!-- Stat Cards Row 1 -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="admin-stat-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="admin-stat-icon" style="background:#EEF2FF;">
+                        <i class="fas fa-box" style="color:var(--primary);"></i>
+                    </div>
+                </div>
+                <div class="admin-stat-label">Products</div>
+                <div class="admin-stat-value">{{ products|length }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="admin-stat-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="admin-stat-icon" style="background:#F0FDF4;">
+                        <i class="fas fa-shopping-cart" style="color:#16A34A;"></i>
+                    </div>
+                </div>
+                <div class="admin-stat-label">Orders</div>
+                <div class="admin-stat-value">{{ orders|length }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="admin-stat-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="admin-stat-icon" style="background:#FFFBEB;">
+                        <i class="fas fa-rupee-sign" style="color:#D97706;"></i>
+                    </div>
+                </div>
+                <div class="admin-stat-label">Revenue</div>
+                <div class="admin-stat-value" style="font-size:1.3rem;">₹{{ "%.0f"|format(orders|sum(attribute='total_amount')) }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="admin-stat-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="admin-stat-icon" style="background:#FFF1F2;">
+                        <i class="fas fa-chart-line" style="color:#E11D48;"></i>
+                    </div>
+                </div>
+                <div class="admin-stat-label">Avg Order</div>
+                <div class="admin-stat-value" style="font-size:1.3rem;">
+                    {% if orders %}₹{{ "%.0f"|format((orders|sum(attribute='total_amount')) / (orders|length)) }}{% else %}₹0{% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="admin-stat-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="admin-stat-icon" style="background:#F0F9FF;">
+                        <i class="fas fa-users" style="color:#0284C7;"></i>
+                    </div>
+                </div>
+                <div class="admin-stat-label">Customers</div>
+                <div class="admin-stat-value">{{ total_users }}</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="admin-stat-card">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div class="admin-stat-icon" style="background:#FDF4FF;">
+                        <i class="fas fa-envelope" style="color:#9333EA;"></i>
+                    </div>
+                </div>
+                <div class="admin-stat-label">Subscribers</div>
+                <div class="admin-stat-value">{{ newsletter_count }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-8">
+            <div class="admin-chart-card">
+                <div class="admin-section-title"><i class="fas fa-chart-bar me-2" style="color:var(--primary);"></i>Revenue — Last 7 Days</div>
+                <canvas id="revenueChart" height="100"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="admin-chart-card h-100">
+                <div class="admin-section-title"><i class="fas fa-chart-pie me-2" style="color:var(--primary);"></i>Revenue by Category</div>
+                {% if cat_revenue %}
+                    <canvas id="categoryChart" height="180"></canvas>
+                {% else %}
+                    <div class="text-center py-4 text-muted" style="font-size:13px;">No sales data yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Stock + Recent Orders -->
+    <div class="row g-3 mb-4">
+
+        <!-- Low Stock Alerts -->
+        <div class="col-lg-4">
+            <div class="admin-chart-card h-100">
+                <div class="admin-section-title">
+                    <i class="fas fa-exclamation-triangle me-2" style="color:#D97706;"></i>Low Stock Alerts
+                    {% if low_stock %}<span class="badge ms-1" style="background:#FEF3C7;color:#D97706;font-size:11px;">{{ low_stock|length }}</span>{% endif %}
+                </div>
+                {% if low_stock %}
+                    {% for p in low_stock %}
+                    <div class="low-stock-row">
+                        <div class="flex-grow-1" style="min-width:0;">
+                            <div style="font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</div>
+                            <div style="font-size:11px;color:var(--slate);">{{ p.category.title() }}</div>
+                        </div>
+                        <div class="text-end flex-shrink-0">
+                            <span class="low-stock-badge {% if p.stock <= 5 %}stock-critical{% else %}stock-low{% endif %}">
+                                {{ p.stock }} left
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4" style="font-size:13px;color:var(--mint);">
+                        <i class="fas fa-check-circle fa-2x mb-2 d-block"></i>All products well-stocked!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="col-lg-8">
+            <div class="admin-chart-card">
+                <div class="admin-section-title"><i class="fas fa-receipt me-2" style="color:var(--primary);"></i>Recent Orders</div>
+                {% if orders %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" style="font-size:13px;">
+                            <thead>
+                                <tr style="color:var(--slate);font-size:11px;text-transform:uppercase;letter-spacing:.05em;">
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders[:10] %}
+                                    <tr>
+                                        <td style="font-weight:700;color:var(--primary);">#TV{{ '%05d' % order.id }}</td>
+                                        <td>{{ order.user.username }}</td>
+                                        <td style="font-weight:600;">₹{{ "%.0f"|format(order.total_amount) }}</td>
+                                        <td>
+                                            <span class="badge {% if order.status == 'delivered' %}bg-success{% elif order.status == 'shipped' %}bg-info{% elif order.status == 'confirmed' %}bg-primary{% else %}bg-warning text-dark{% endif %}" style="border-radius:20px;">
+                                                {{ order.status.title() }}
+                                            </span>
+                                        </td>
+                                        <td style="color:var(--slate);">{{ order.created_at.strftime('%d %b %Y') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4 text-muted" style="font-size:13px;">No orders yet.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="admin-chart-card">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="admin-section-title mb-0"><i class="fas fa-box-open me-2" style="color:var(--primary);"></i>Product Catalogue</div>
+            <a href="{{ url_for('add_product') }}" class="btn btn-sm btn-outline-primary" style="border-radius:20px;">
+                <i class="fas fa-plus me-1"></i>Add New
+            </a>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" style="font-size:13px;">
+                <thead>
+                    <tr style="color:var(--slate);font-size:11px;text-transform:uppercase;letter-spacing:.05em;">
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td style="font-weight:600;color:var(--ink);">{{ product.name }}</td>
+                        <td><span class="category-badge category-{{ product.category.lower() }}">{{ product.category.title() }}</span></td>
+                        <td style="font-weight:700;color:var(--primary);">₹{{ "%.0f"|format(product.price) }}</td>
+                        <td>
+                            <span style="font-weight:600;color:{% if product.stock <= 5 %}#DC2626{% elif product.stock <= 19 %}#D97706{% else %}#16A34A{% endif %};">
+                                {{ product.stock }}
+                            </span>
+                        </td>
+                        <td style="color:var(--slate);">{{ product.supplier }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+    var labels  = {{ labels_by_day | tojson }};
+    var revenue = {{ revenue_by_day | tojson }};
+    var orders  = {{ orders_by_day | tojson }};
+
+    var rCtx = document.getElementById('revenueChart');
+    if (rCtx) {
+        new Chart(rCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue (₹)',
+                    data: revenue,
+                    backgroundColor: 'rgba(79,70,229,0.18)',
+                    borderColor: '#4F46E5',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Orders',
+                    data: orders,
+                    type: 'line',
+                    borderColor: '#F59E0B',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#F59E0B',
+                    pointRadius: 4,
+                    tension: 0.35,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 12 }, boxWidth: 14 } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                if (ctx.datasetIndex === 0) return ' ₹' + ctx.parsed.y.toLocaleString('en-IN');
+                                return ' ' + ctx.parsed.y + ' orders';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y:  { position: 'left',  grid: { color: '#F1F5F9' }, ticks: { callback: v => '₹' + v.toLocaleString('en-IN'), font: { size: 11 } }, beginAtZero: true },
+                    y1: { position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 11 } }, beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    {% if cat_revenue %}
+    var catLabels = {{ cat_revenue.keys() | list | tojson }};
+    var catVals   = {{ cat_revenue.values() | list | tojson }};
+    var catColors = ['#4F46E5','#EC4899','#F59E0B','#34D399','#3B82F6'];
+    var cCtx = document.getElementById('categoryChart');
+    if (cCtx) {
+        new Chart(cCtx, {
+            type: 'doughnut',
+            data: {
+                labels: catLabels.map(function(l){ return l.charAt(0).toUpperCase()+l.slice(1); }),
+                datasets: [{ data: catVals, backgroundColor: catColors, borderWidth: 2, borderColor: '#fff', hoverOffset: 6 }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12, padding: 10 } },
+                    tooltip: { callbacks: { label: function(ctx) { return ' ₹' + ctx.parsed.toLocaleString('en-IN'); } } }
+                },
+                cutout: '62%'
+            }
+        });
+    }
+    {% endif %}
+})();
+</script>
+{% endblock %}

@@ -20,3 +20,11 @@ Use `gunicorn wsgi:app` for production hosts such as Render, Railway, Fly.io, or
 
 Set `APP_BASE_URL` to the public site URL so email links and checkout redirects stay correct.
 Set `SESSION_COOKIE_SECURE=true` behind HTTPS, and only set `ADMIN_BOOTSTRAP_USERNAME`, `ADMIN_BOOTSTRAP_EMAIL`, and `ADMIN_BOOTSTRAP_PASSWORD` when you intentionally want the seed admin account created on first boot.
+
+## Netlify deploy
+
+Netlify publishes the static storefront from `docs/` using `netlify.toml`.
+
+- publish directory: `docs`
+- entry page: `docs/index.html`
+- the static site keeps cart, wishlist, and demo checkout state in the browser
